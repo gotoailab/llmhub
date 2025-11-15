@@ -1,0 +1,62 @@
+server:
+  host: "0.0.0.0"
+  port: 8080
+
+# API Keys 用于客户端认证（客户端调用时使用的 Key）
+auth:
+  api_keys:
+    - "sk-aihub-your-api-key-here"
+    - "sk-aihub-another-key"
+
+# 模型配置（每个模型的实际 API Key 和配置）
+models:
+  # OpenAI
+  - name: "gpt-3.5-turbo"
+    provider: "openai"
+    api_key: "sk-your-openai-api-key"
+    base_url: "https://api.openai.com/v1"
+  
+  - name: "gpt-4"
+    provider: "openai"
+    api_key: "sk-your-openai-api-key"
+    base_url: "https://api.openai.com/v1"
+
+  # Claude
+  - name: "claude-3-sonnet"
+    provider: "claude"
+    api_key: "sk-ant-your-claude-api-key"
+    base_url: "https://api.anthropic.com"
+  
+  - name: "claude-3-opus"
+    provider: "claude"
+    api_key: "sk-ant-your-claude-api-key"
+    base_url: "https://api.anthropic.com"
+
+  # DeepSeek
+  - name: "deepseek-chat"
+    provider: "deepseek"
+    api_key: "your-deepseek-api-key"
+    base_url: "https://api.deepseek.com/v1"
+  
+  - name: "deepseek-coder"
+    provider: "deepseek"
+    api_key: "your-deepseek-api-key"
+    base_url: "https://api.deepseek.com/v1"
+
+  # Qwen (通义千问)
+  - name: "qwen-turbo"
+    provider: "qwen"
+    api_key: "your-qwen-api-key"
+    base_url: "https://dashscope.aliyuncs.com/api/v1"
+  
+  - name: "qwen-plus"
+    provider: "qwen"
+    api_key: "your-qwen-api-key"
+    base_url: "https://dashscope.aliyuncs.com/api/v1"
+
+  # 硅基流动
+  - name: "siliconflow-model"
+    provider: "siliconflow"
+    api_key: "your-siliconflow-api-key"
+    base_url: "https://api.siliconflow.cn/v1"
+
