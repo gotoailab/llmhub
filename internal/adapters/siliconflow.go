@@ -1,6 +1,7 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -9,7 +10,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aihub/internal/models"
 )
 
 type SiliconFlowAdapter struct {
@@ -33,8 +33,8 @@ func NewSiliconFlowAdapter(apiKey, baseURL string) (Adapter, error) {
 	}, nil
 }
 
-func (a *SiliconFlowAdapter) GetProvider() string {
-	return "siliconflow"
+func (a *SiliconFlowAdapter) GetProvider() Provider {
+	return Provider("siliconflow")
 }
 
 func (a *SiliconFlowAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

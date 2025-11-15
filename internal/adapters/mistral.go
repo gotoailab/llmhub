@@ -1,6 +1,7 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -9,7 +10,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aihub/internal/models"
 )
 
 type MistralAdapter struct {
@@ -33,8 +33,8 @@ func NewMistralAdapter(apiKey, baseURL string) (Adapter, error) {
 	}, nil
 }
 
-func (a *MistralAdapter) GetProvider() string {
-	return "mistral"
+func (a *MistralAdapter) GetProvider() Provider {
+	return Provider("mistral")
 }
 
 func (a *MistralAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

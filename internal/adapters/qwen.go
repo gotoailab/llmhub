@@ -1,6 +1,7 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -9,7 +10,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aihub/internal/models"
 )
 
 type QwenAdapter struct {
@@ -33,8 +33,8 @@ func NewQwenAdapter(apiKey, baseURL string) (Adapter, error) {
 	}, nil
 }
 
-func (a *QwenAdapter) GetProvider() string {
-	return "qwen"
+func (a *QwenAdapter) GetProvider() Provider {
+	return Provider("qwen")
 }
 
 func (a *QwenAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

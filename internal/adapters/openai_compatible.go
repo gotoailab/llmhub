@@ -14,7 +14,7 @@ import (
 
 // openAICompatibleAdapter 通用的 OpenAI 兼容适配器
 type openAICompatibleAdapter struct {
-	provider   string
+	provider   Provider
 	apiKey     string
 	baseURL    string
 	client     *http.Client
@@ -23,7 +23,7 @@ type openAICompatibleAdapter struct {
 }
 
 // NewOpenAICompatibleAdapter 创建通用的 OpenAI 兼容适配器
-func NewOpenAICompatibleAdapter(provider, apiKey, baseURL, endpoint, authHeader string) *openAICompatibleAdapter {
+func NewOpenAICompatibleAdapter(provider Provider, apiKey, baseURL, endpoint, authHeader string) *openAICompatibleAdapter {
 	if baseURL == "" {
 		baseURL = "https://api.openai.com/v1"
 	}
@@ -46,7 +46,7 @@ func NewOpenAICompatibleAdapter(provider, apiKey, baseURL, endpoint, authHeader 
 	}
 }
 
-func (a *openAICompatibleAdapter) GetProvider() string {
+func (a *openAICompatibleAdapter) GetProvider() Provider {
 	return a.provider
 }
 
@@ -126,4 +126,3 @@ func (a *openAICompatibleAdapter) ChatCompletionStream(ctx context.Context, req 
 
 	return resp.Body, nil
 }
-

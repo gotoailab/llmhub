@@ -19,22 +19,22 @@ func (w *adapterWrapper) ChatCompletion(ctx context.Context, req *internalChatCo
 		Model:            req.Model,
 		Messages:         w.toAdapterMessages(req.Messages),
 		Temperature:      req.Temperature,
-		TopP:              req.TopP,
-		MaxTokens:         req.MaxTokens,
-		Stream:            req.Stream,
-		PresencePenalty:   req.PresencePenalty,
-		FrequencyPenalty:  req.FrequencyPenalty,
-		Stop:              req.Stop,
-		User:              req.User,
-		Functions:         w.toAdapterFunctions(req.Functions),
-		FunctionCall:      req.FunctionCall,
-		LogitBias:         req.LogitBias,
-		LogProbs:          req.LogProbs,
-		TopLogProbs:       req.TopLogProbs,
-		ResponseFormat:    w.toAdapterResponseFormat(req.ResponseFormat),
-		Seed:              req.Seed,
-		Tools:             w.toAdapterTools(req.Tools),
-		ToolChoice:        req.ToolChoice,
+		TopP:             req.TopP,
+		MaxTokens:        req.MaxTokens,
+		Stream:           req.Stream,
+		PresencePenalty:  req.PresencePenalty,
+		FrequencyPenalty: req.FrequencyPenalty,
+		Stop:             req.Stop,
+		User:             req.User,
+		Functions:        w.toAdapterFunctions(req.Functions),
+		FunctionCall:     req.FunctionCall,
+		LogitBias:        req.LogitBias,
+		LogProbs:         req.LogProbs,
+		TopLogProbs:      req.TopLogProbs,
+		ResponseFormat:   w.toAdapterResponseFormat(req.ResponseFormat),
+		Seed:             req.Seed,
+		Tools:            w.toAdapterTools(req.Tools),
+		ToolChoice:       req.ToolChoice,
 	}
 
 	resp, err := w.adapter.ChatCompletion(ctx, adapterReq)
@@ -50,29 +50,30 @@ func (w *adapterWrapper) ChatCompletionStream(ctx context.Context, req *internal
 		Model:            req.Model,
 		Messages:         w.toAdapterMessages(req.Messages),
 		Temperature:      req.Temperature,
-		TopP:              req.TopP,
-		MaxTokens:         req.MaxTokens,
-		Stream:            true,
-		PresencePenalty:   req.PresencePenalty,
-		FrequencyPenalty:  req.FrequencyPenalty,
-		Stop:              req.Stop,
-		User:              req.User,
-		Functions:         w.toAdapterFunctions(req.Functions),
-		FunctionCall:      req.FunctionCall,
-		LogitBias:         req.LogitBias,
-		LogProbs:          req.LogProbs,
-		TopLogProbs:       req.TopLogProbs,
-		ResponseFormat:    w.toAdapterResponseFormat(req.ResponseFormat),
-		Seed:              req.Seed,
-		Tools:             w.toAdapterTools(req.Tools),
-		ToolChoice:        req.ToolChoice,
+		TopP:             req.TopP,
+		MaxTokens:        req.MaxTokens,
+		Stream:           true,
+		PresencePenalty:  req.PresencePenalty,
+		FrequencyPenalty: req.FrequencyPenalty,
+		Stop:             req.Stop,
+		User:             req.User,
+		Functions:        w.toAdapterFunctions(req.Functions),
+		FunctionCall:     req.FunctionCall,
+		LogitBias:        req.LogitBias,
+		LogProbs:         req.LogProbs,
+		TopLogProbs:      req.TopLogProbs,
+		ResponseFormat:   w.toAdapterResponseFormat(req.ResponseFormat),
+		Seed:             req.Seed,
+		Tools:            w.toAdapterTools(req.Tools),
+		ToolChoice:       req.ToolChoice,
 	}
 
 	return w.adapter.ChatCompletionStream(ctx, adapterReq)
 }
 
-func (w *adapterWrapper) GetProvider() string {
-	return w.adapter.GetProvider()
+func (w *adapterWrapper) GetProvider() Provider {
+	// 将 adapters.Provider 转换为 aihub.Provider
+	return Provider(w.adapter.GetProvider())
 }
 
 // 类型转换方法
@@ -215,4 +216,3 @@ func (w *adapterWrapper) toInternalUsage(usage models.Usage) internalUsage {
 		TotalTokens:      usage.TotalTokens,
 	}
 }
-

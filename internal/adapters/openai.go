@@ -1,11 +1,11 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"context"
 	"fmt"
 	"io"
 
-	"github.com/aihub/internal/models"
 	"github.com/sashabaranov/go-openai"
 )
 
@@ -26,8 +26,8 @@ func NewOpenAIAdapter(apiKey, baseURL string) (Adapter, error) {
 	}, nil
 }
 
-func (a *OpenAIAdapter) GetProvider() string {
-	return "openai"
+func (a *OpenAIAdapter) GetProvider() Provider {
+	return Provider("openai")
 }
 
 func (a *OpenAIAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

@@ -1,10 +1,10 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"context"
 	"io"
 
-	"github.com/aihub/internal/models"
 )
 
 // NovitaAdapter novita.ai适配器
@@ -17,12 +17,12 @@ func NewNovitaAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://api.novita.ai/v3"
 	}
-	adapter := NewOpenAICompatibleAdapter("novita", apiKey, baseURL, "/chat/completions", "Bearer")
+	adapter := NewOpenAICompatibleAdapter(Provider("novita"), apiKey, baseURL, "/chat/completions", "Bearer")
 	return &NovitaAdapter{adapter}, nil
 }
 
-func (a *NovitaAdapter) GetProvider() string {
-	return "novita"
+func (a *NovitaAdapter) GetProvider() Provider {
+	return Provider("novita")
 }
 
 func (a *NovitaAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

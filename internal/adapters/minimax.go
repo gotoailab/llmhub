@@ -1,10 +1,10 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"context"
 	"io"
 
-	"github.com/aihub/internal/models"
 )
 
 // MinimaxAdapter MINIMAX适配器
@@ -17,12 +17,12 @@ func NewMinimaxAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://api.minimax.chat/v1"
 	}
-	adapter := NewOpenAICompatibleAdapter("minimax", apiKey, baseURL, "/chat/completions", "Bearer")
+	adapter := NewOpenAICompatibleAdapter(Provider("minimax"), apiKey, baseURL, "/chat/completions", "Bearer")
 	return &MinimaxAdapter{adapter}, nil
 }
 
-func (a *MinimaxAdapter) GetProvider() string {
-	return "minimax"
+func (a *MinimaxAdapter) GetProvider() Provider {
+	return Provider("minimax")
 }
 
 func (a *MinimaxAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

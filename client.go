@@ -8,38 +8,7 @@ import (
 	"github.com/aihub/internal/adapters"
 )
 
-// Provider 支持的模型提供商
-type Provider string
-
-const (
-	ProviderOpenAI      Provider = "openai"
-	ProviderClaude      Provider = "claude"
-	ProviderDeepSeek    Provider = "deepseek"
-	ProviderQwen        Provider = "qwen"
-	ProviderSiliconFlow Provider = "siliconflow"
-	ProviderGemini      Provider = "gemini"
-	ProviderMistral     Provider = "mistral"
-	ProviderDoubao      Provider = "doubao"
-	ProviderErnie       Provider = "ernie"
-	ProviderSpark       Provider = "spark"
-	ProviderChatGLM     Provider = "chatglm"
-	Provider360         Provider = "360"
-	ProviderHunyuan     Provider = "hunyuan"
-	ProviderMoonshot    Provider = "moonshot"
-	ProviderBaichuan    Provider = "baichuan"
-	ProviderMiniMax     Provider = "minimax"
-	ProviderGroq        Provider = "groq"
-	ProviderOllama      Provider = "ollama"
-	ProviderYi          Provider = "yi"
-	ProviderStepFun     Provider = "stepfun"
-	ProviderCoze        Provider = "coze"
-	ProviderCohere      Provider = "cohere"
-	ProviderCloudflare  Provider = "cloudflare"
-	ProviderDeepL       Provider = "deepl"
-	ProviderTogether    Provider = "together"
-	ProviderNovita      Provider = "novita"
-	ProviderXAI         Provider = "xai"
-)
+// Provider 定义在 provider.go 中
 
 // Client 客户端接口，提供 OpenAI 兼容的方法
 type Client struct {
@@ -79,8 +48,8 @@ func NewClient(config ClientConfig) (*Client, error) {
 		return nil, fmt.Errorf("provider is required")
 	}
 
-	// 创建适配器
-	adapter, err := adapters.CreateAdapter(string(config.Provider), config.APIKey, config.BaseURL)
+	// 创建适配器（将 aihub.Provider 转换为 adapters.Provider）
+	adapter, err := adapters.CreateAdapter(adapters.Provider(config.Provider), config.APIKey, config.BaseURL)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create adapter: %w", err)
 	}
@@ -135,7 +104,7 @@ func (c *Client) ChatCompletionsStream(ctx context.Context, req ChatCompletionRe
 }
 
 // GetProvider 获取当前客户端使用的提供商
-func (c *Client) GetProvider() string {
+func (c *Client) GetProvider() Provider {
 	return c.adapter.GetProvider()
 }
 

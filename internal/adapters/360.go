@@ -17,12 +17,12 @@ func New360Adapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://api.360.cn/v1"
 	}
-	adapter := NewOpenAICompatibleAdapter("360", apiKey, baseURL, "/chat/completions", "Bearer")
+	adapter := NewOpenAICompatibleAdapter(Provider("360"), apiKey, baseURL, "/chat/completions", "Bearer")
 	return &Three60Adapter{adapter}, nil
 }
 
-func (a *Three60Adapter) GetProvider() string {
-	return "360"
+func (a *Three60Adapter) GetProvider() Provider {
+	return Provider("360")
 }
 
 func (a *Three60Adapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

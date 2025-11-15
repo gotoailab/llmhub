@@ -1,10 +1,10 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"context"
 	"io"
 
-	"github.com/aihub/internal/models"
 )
 
 // HunyuanAdapter 腾讯混元适配器
@@ -17,12 +17,12 @@ func NewHunyuanAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://hunyuan.tencentcloudapi.com"
 	}
-	adapter := NewOpenAICompatibleAdapter("hunyuan", apiKey, baseURL, "/chat/completions", "Bearer")
+	adapter := NewOpenAICompatibleAdapter(Provider("hunyuan"), apiKey, baseURL, "/chat/completions", "Bearer")
 	return &HunyuanAdapter{adapter}, nil
 }
 
-func (a *HunyuanAdapter) GetProvider() string {
-	return "hunyuan"
+func (a *HunyuanAdapter) GetProvider() Provider {
+	return Provider("hunyuan")
 }
 
 func (a *HunyuanAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

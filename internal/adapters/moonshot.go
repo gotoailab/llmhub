@@ -1,10 +1,10 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"context"
 	"io"
 
-	"github.com/aihub/internal/models"
 )
 
 // MoonshotAdapter Moonshot AI适配器
@@ -17,12 +17,12 @@ func NewMoonshotAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://api.moonshot.cn/v1"
 	}
-	adapter := NewOpenAICompatibleAdapter("moonshot", apiKey, baseURL, "/chat/completions", "Bearer")
+	adapter := NewOpenAICompatibleAdapter(Provider("moonshot"), apiKey, baseURL, "/chat/completions", "Bearer")
 	return &MoonshotAdapter{adapter}, nil
 }
 
-func (a *MoonshotAdapter) GetProvider() string {
-	return "moonshot"
+func (a *MoonshotAdapter) GetProvider() Provider {
+	return Provider("moonshot")
 }
 
 func (a *MoonshotAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

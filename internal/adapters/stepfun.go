@@ -1,10 +1,10 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"context"
 	"io"
 
-	"github.com/aihub/internal/models"
 )
 
 // StepfunAdapter 阶跃星辰适配器
@@ -17,12 +17,12 @@ func NewStepfunAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://api.stepfun.com/v1"
 	}
-	adapter := NewOpenAICompatibleAdapter("stepfun", apiKey, baseURL, "/chat/completions", "Bearer")
+	adapter := NewOpenAICompatibleAdapter(Provider("stepfun"), apiKey, baseURL, "/chat/completions", "Bearer")
 	return &StepfunAdapter{adapter}, nil
 }
 
-func (a *StepfunAdapter) GetProvider() string {
-	return "stepfun"
+func (a *StepfunAdapter) GetProvider() Provider {
+	return Provider("stepfun")
 }
 
 func (a *StepfunAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

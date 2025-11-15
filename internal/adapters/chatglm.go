@@ -1,10 +1,10 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"context"
 	"io"
 
-	"github.com/aihub/internal/models"
 )
 
 // ChatglmAdapter ChatGLM（智谱）适配器
@@ -17,12 +17,12 @@ func NewChatglmAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://open.bigmodel.cn/api/paas/v4"
 	}
-	adapter := NewOpenAICompatibleAdapter("chatglm", apiKey, baseURL, "/chat/completions", "Bearer")
+	adapter := NewOpenAICompatibleAdapter(Provider("chatglm"), apiKey, baseURL, "/chat/completions", "Bearer")
 	return &ChatglmAdapter{adapter}, nil
 }
 
-func (a *ChatglmAdapter) GetProvider() string {
-	return "chatglm"
+func (a *ChatglmAdapter) GetProvider() Provider {
+	return Provider("chatglm")
 }
 
 func (a *ChatglmAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

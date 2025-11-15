@@ -45,8 +45,8 @@ func (h *Handler) ChatCompletions(c *gin.Context) {
 		return
 	}
 
-	// 创建适配器
-	adapter, err := adapters.CreateAdapter(modelConfig.Provider, modelConfig.APIKey, modelConfig.BaseURL)
+	// 创建适配器（将字符串转换为 adapters.Provider）
+	adapter, err := adapters.CreateAdapter(adapters.Provider(modelConfig.Provider), modelConfig.APIKey, modelConfig.BaseURL)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ErrorResponse{
 			Error: models.ErrorDetail{
@@ -119,12 +119,12 @@ func (h *Handler) handleStreamResponse(c *gin.Context, ctx context.Context, adap
 // Models 返回可用的模型列表
 func (h *Handler) Models(c *gin.Context) {
 	modelsList := make([]map[string]interface{}, 0, len(config.GlobalConfig.Models))
-	
+
 	for _, model := range config.GlobalConfig.Models {
 		modelsList = append(modelsList, map[string]interface{}{
-			"id":      model.Name,
-			"object":  "model",
-			"created": time.Now().Unix(),
+			"id":       model.Name,
+			"object":   "model",
+			"created":  time.Now().Unix(),
 			"owned_by": model.Provider,
 		})
 	}
@@ -142,4 +142,3 @@ func (h *Handler) Health(c *gin.Context) {
 		"time":   time.Now().Unix(),
 	})
 }
-

@@ -55,7 +55,7 @@ func TestNewClient(t *testing.T) {
 				t.Error("NewClient() returned nil client when error was expected")
 			}
 			if !tt.wantErr && client != nil {
-				if client.GetProvider() != string(tt.config.Provider) {
+				if client.GetProvider() != tt.config.Provider {
 					t.Errorf("GetProvider() = %v, want %v", client.GetProvider(), tt.config.Provider)
 				}
 			}
@@ -88,7 +88,7 @@ func TestClient_GetProvider(t *testing.T) {
 				t.Logf("Provider %s not available: %v", provider, err)
 				return
 			}
-			if client.GetProvider() != string(provider) {
+			if client.GetProvider() != provider {
 				t.Errorf("GetProvider() = %v, want %v", client.GetProvider(), provider)
 			}
 		})

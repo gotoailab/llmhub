@@ -1,10 +1,10 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"context"
 	"io"
 
-	"github.com/aihub/internal/models"
 )
 
 // TogetherAdapter together.ai适配器
@@ -17,12 +17,12 @@ func NewTogetherAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://api.together.xyz/v1"
 	}
-	adapter := NewOpenAICompatibleAdapter("together", apiKey, baseURL, "/chat/completions", "Bearer")
+	adapter := NewOpenAICompatibleAdapter(Provider("together"), apiKey, baseURL, "/chat/completions", "Bearer")
 	return &TogetherAdapter{adapter}, nil
 }
 
-func (a *TogetherAdapter) GetProvider() string {
-	return "together"
+func (a *TogetherAdapter) GetProvider() Provider {
+	return Provider("together")
 }
 
 func (a *TogetherAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

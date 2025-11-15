@@ -1,6 +1,7 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -9,7 +10,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aihub/internal/models"
 )
 
 type GeminiAdapter struct {
@@ -33,8 +33,8 @@ func NewGeminiAdapter(apiKey, baseURL string) (Adapter, error) {
 	}, nil
 }
 
-func (a *GeminiAdapter) GetProvider() string {
-	return "gemini"
+func (a *GeminiAdapter) GetProvider() Provider {
+	return Provider("gemini")
 }
 
 func (a *GeminiAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

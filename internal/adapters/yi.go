@@ -1,10 +1,10 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"context"
 	"io"
 
-	"github.com/aihub/internal/models"
 )
 
 // YiAdapter 零一万物适配器
@@ -17,12 +17,12 @@ func NewYiAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://api.lingyiwanwu.com/v1"
 	}
-	adapter := NewOpenAICompatibleAdapter("yi", apiKey, baseURL, "/chat/completions", "Bearer")
+	adapter := NewOpenAICompatibleAdapter(Provider("yi"), apiKey, baseURL, "/chat/completions", "Bearer")
 	return &YiAdapter{adapter}, nil
 }
 
-func (a *YiAdapter) GetProvider() string {
-	return "yi"
+func (a *YiAdapter) GetProvider() Provider {
+	return Provider("yi")
 }
 
 func (a *YiAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

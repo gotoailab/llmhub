@@ -1,10 +1,10 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"context"
 	"io"
 
-	"github.com/aihub/internal/models"
 )
 
 // CozeAdapter Coze适配器
@@ -17,12 +17,12 @@ func NewCozeAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://api.coze.cn/v1"
 	}
-	adapter := NewOpenAICompatibleAdapter("coze", apiKey, baseURL, "/chat/completions", "Bearer")
+	adapter := NewOpenAICompatibleAdapter(Provider("coze"), apiKey, baseURL, "/chat/completions", "Bearer")
 	return &CozeAdapter{adapter}, nil
 }
 
-func (a *CozeAdapter) GetProvider() string {
-	return "coze"
+func (a *CozeAdapter) GetProvider() Provider {
+	return Provider("coze")
 }
 
 func (a *CozeAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

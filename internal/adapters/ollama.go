@@ -17,12 +17,12 @@ func NewOllamaAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "http://localhost:11434"
 	}
-	adapter := NewOpenAICompatibleAdapter("ollama", apiKey, baseURL, "/api/chat", "")
+	adapter := NewOpenAICompatibleAdapter(Provider("ollama"), apiKey, baseURL, "/api/chat", "")
 	return &OllamaAdapter{adapter}, nil
 }
 
-func (a *OllamaAdapter) GetProvider() string {
-	return "ollama"
+func (a *OllamaAdapter) GetProvider() Provider {
+	return Provider("ollama")
 }
 
 func (a *OllamaAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

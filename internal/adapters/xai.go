@@ -1,10 +1,10 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"context"
 	"io"
 
-	"github.com/aihub/internal/models"
 )
 
 // XaiAdapter xAI适配器
@@ -17,12 +17,12 @@ func NewXaiAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://api.x.ai/v1"
 	}
-	adapter := NewOpenAICompatibleAdapter("xai", apiKey, baseURL, "/chat/completions", "Bearer")
+	adapter := NewOpenAICompatibleAdapter(Provider("xai"), apiKey, baseURL, "/chat/completions", "Bearer")
 	return &XaiAdapter{adapter}, nil
 }
 
-func (a *XaiAdapter) GetProvider() string {
-	return "xai"
+func (a *XaiAdapter) GetProvider() Provider {
+	return Provider("xai")
 }
 
 func (a *XaiAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

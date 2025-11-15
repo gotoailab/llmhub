@@ -8,39 +8,39 @@ import (
 )
 
 func init() {
-	// 在测试中注册适配器
-	Register("openai", NewOpenAIAdapter)
-	Register("claude", NewClaudeAdapter)
-	Register("deepseek", NewDeepSeekAdapter)
-	Register("qwen", NewQwenAdapter)
-	Register("siliconflow", NewSiliconFlowAdapter)
-	Register("gemini", NewGeminiAdapter)
-	Register("mistral", NewMistralAdapter)
+	// 在测试中注册适配器（使用字符串，避免循环导入）
+	Register(Provider("openai"), NewOpenAIAdapter)
+	Register(Provider("claude"), NewClaudeAdapter)
+	Register(Provider("deepseek"), NewDeepSeekAdapter)
+	Register(Provider("qwen"), NewQwenAdapter)
+	Register(Provider("siliconflow"), NewSiliconFlowAdapter)
+	Register(Provider("gemini"), NewGeminiAdapter)
+	Register(Provider("mistral"), NewMistralAdapter)
 }
 
 func TestCreateAdapter(t *testing.T) {
 	tests := []struct {
 		name     string
-		provider string
+		provider Provider
 		apiKey   string
 		baseURL  string
 		wantErr  bool
 	}{
 		{
 			name:     "openai",
-			provider: "openai",
+			provider: Provider("openai"),
 			apiKey:   "test-key",
 			wantErr:  false,
 		},
 		{
 			name:     "claude",
-			provider: "claude",
+			provider: Provider("claude"),
 			apiKey:   "test-key",
 			wantErr:  false,
 		},
 		{
 			name:     "invalid provider",
-			provider: "invalid",
+			provider: Provider("invalid"),
 			apiKey:   "test-key",
 			wantErr:  true,
 		},
@@ -66,18 +66,18 @@ func TestCreateAdapter(t *testing.T) {
 }
 
 func TestAdapter_GetProvider(t *testing.T) {
-	providers := []string{
-		"openai",
-		"claude",
-		"deepseek",
-		"qwen",
-		"siliconflow",
-		"gemini",
-		"mistral",
+	providers := []Provider{
+		Provider("openai"),
+		Provider("claude"),
+		Provider("deepseek"),
+		Provider("qwen"),
+		Provider("siliconflow"),
+		Provider("gemini"),
+		Provider("mistral"),
 	}
 
 	for _, provider := range providers {
-		t.Run(provider, func(t *testing.T) {
+		t.Run(string(provider), func(t *testing.T) {
 			adapter, err := CreateAdapter(provider, "test-key", "")
 			if err != nil {
 				t.Logf("Provider %s not available: %v", provider, err)
@@ -92,7 +92,7 @@ func TestAdapter_GetProvider(t *testing.T) {
 
 // 测试适配器接口实现
 func TestAdapterInterface(t *testing.T) {
-	adapter, err := CreateAdapter("openai", "test-key", "")
+	adapter, err := CreateAdapter(Provider("openai"), "test-key", "")
 	if err != nil {
 		t.Skipf("Skipping test: %v", err)
 		return

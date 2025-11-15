@@ -1,10 +1,10 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"context"
 	"io"
 
-	"github.com/aihub/internal/models"
 )
 
 // CohereAdapter Cohere适配器
@@ -17,12 +17,12 @@ func NewCohereAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://api.cohere.ai/v1"
 	}
-	adapter := NewOpenAICompatibleAdapter("cohere", apiKey, baseURL, "/chat/completions", "Bearer")
+	adapter := NewOpenAICompatibleAdapter(Provider("cohere"), apiKey, baseURL, "/chat/completions", "Bearer")
 	return &CohereAdapter{adapter}, nil
 }
 
-func (a *CohereAdapter) GetProvider() string {
-	return "cohere"
+func (a *CohereAdapter) GetProvider() Provider {
+	return Provider("cohere")
 }
 
 func (a *CohereAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

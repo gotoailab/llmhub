@@ -1,6 +1,7 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -9,7 +10,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aihub/internal/models"
 )
 
 type ClaudeAdapter struct {
@@ -33,8 +33,8 @@ func NewClaudeAdapter(apiKey, baseURL string) (Adapter, error) {
 	}, nil
 }
 
-func (a *ClaudeAdapter) GetProvider() string {
-	return "claude"
+func (a *ClaudeAdapter) GetProvider() Provider {
+	return Provider("claude")
 }
 
 func (a *ClaudeAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

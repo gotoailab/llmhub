@@ -6,43 +6,39 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/aihub"
 	"github.com/aihub/internal/adapters"
 	"github.com/aihub/internal/api"
 	"github.com/aihub/internal/config"
 )
 
 func init() {
-	// 注册所有适配器
-	adapters.Register("openai", adapters.NewOpenAIAdapter)
-	adapters.Register("claude", adapters.NewClaudeAdapter)
-	adapters.Register("deepseek", adapters.NewDeepSeekAdapter)
-	adapters.Register("qwen", adapters.NewQwenAdapter)
-	adapters.Register("siliconflow", adapters.NewSiliconFlowAdapter)
-
-	// 注册新适配器
-	adapters.Register("gemini", adapters.NewGeminiAdapter)
-	adapters.Register("mistral", adapters.NewMistralAdapter)
-	adapters.Register("doubao", adapters.NewDoubaoAdapter)
-	adapters.Register("ernie", adapters.NewErnieAdapter)
-	adapters.Register("spark", adapters.NewSparkAdapter)
-	adapters.Register("chatglm", adapters.NewChatglmAdapter)
-	adapters.Register("360", adapters.New360Adapter)
-	adapters.Register("hunyuan", adapters.NewHunyuanAdapter)
-	adapters.Register("moonshot", adapters.NewMoonshotAdapter)
-	adapters.Register("baichuan", adapters.NewBaichuanAdapter)
-	adapters.Register("minimax", adapters.NewMinimaxAdapter)
-	adapters.Register("groq", adapters.NewGroqAdapter)
-	adapters.Register("ollama", adapters.NewOllamaAdapter)
-	adapters.Register("yi", adapters.NewYiAdapter)
-	adapters.Register("stepfun", adapters.NewStepfunAdapter)
-	adapters.Register("coze", adapters.NewCozeAdapter)
-	adapters.Register("cohere", adapters.NewCohereAdapter)
-	// Cloudflare 和 DeepL 需要特殊处理，暂时跳过
-	// adapters.Register("cloudflare", adapters.NewCloudflareAdapter)
-	// adapters.Register("deepl", adapters.NewDeepLAdapter)
-	adapters.Register("together", adapters.NewTogetherAdapter)
-	adapters.Register("novita", adapters.NewNovitaAdapter)
-	adapters.Register("xai", adapters.NewXaiAdapter)
+	// 注册所有适配器（使用枚举）
+	adapters.Register(adapters.Provider(aihub.ProviderOpenAI), adapters.NewOpenAIAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderClaude), adapters.NewClaudeAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderDeepSeek), adapters.NewDeepSeekAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderQwen), adapters.NewQwenAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderSiliconFlow), adapters.NewSiliconFlowAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderGemini), adapters.NewGeminiAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderMistral), adapters.NewMistralAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderDoubao), adapters.NewDoubaoAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderErnie), adapters.NewErnieAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderSpark), adapters.NewSparkAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderChatGLM), adapters.NewChatglmAdapter)
+	adapters.Register(adapters.Provider(aihub.Provider360), adapters.New360Adapter)
+	adapters.Register(adapters.Provider(aihub.ProviderHunyuan), adapters.NewHunyuanAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderMoonshot), adapters.NewMoonshotAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderBaichuan), adapters.NewBaichuanAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderMiniMax), adapters.NewMinimaxAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderGroq), adapters.NewGroqAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderOllama), adapters.NewOllamaAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderYi), adapters.NewYiAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderStepFun), adapters.NewStepfunAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderCoze), adapters.NewCozeAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderCohere), adapters.NewCohereAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderTogether), adapters.NewTogetherAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderNovita), adapters.NewNovitaAdapter)
+	adapters.Register(adapters.Provider(aihub.ProviderXAI), adapters.NewXaiAdapter)
 }
 
 func main() {

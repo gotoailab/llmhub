@@ -1,10 +1,10 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"context"
 	"io"
 
-	"github.com/aihub/internal/models"
 )
 
 // SparkAdapter 讯飞星火适配器
@@ -17,12 +17,12 @@ func NewSparkAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://spark-api.xf-yun.com/v1"
 	}
-	adapter := NewOpenAICompatibleAdapter("spark", apiKey, baseURL, "/chat/completions", "Bearer")
+	adapter := NewOpenAICompatibleAdapter(Provider("spark"), apiKey, baseURL, "/chat/completions", "Bearer")
 	return &SparkAdapter{adapter}, nil
 }
 
-func (a *SparkAdapter) GetProvider() string {
-	return "spark"
+func (a *SparkAdapter) GetProvider() Provider {
+	return Provider("spark")
 }
 
 func (a *SparkAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

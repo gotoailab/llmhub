@@ -1,10 +1,10 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"context"
 	"io"
 
-	"github.com/aihub/internal/models"
 )
 
 // BaichuanAdapter 百川大模型适配器
@@ -17,12 +17,12 @@ func NewBaichuanAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://api.baichuan-ai.com/v1"
 	}
-	adapter := NewOpenAICompatibleAdapter("baichuan", apiKey, baseURL, "/chat/completions", "Bearer")
+	adapter := NewOpenAICompatibleAdapter(Provider("baichuan"), apiKey, baseURL, "/chat/completions", "Bearer")
 	return &BaichuanAdapter{adapter}, nil
 }
 
-func (a *BaichuanAdapter) GetProvider() string {
-	return "baichuan"
+func (a *BaichuanAdapter) GetProvider() Provider {
+	return Provider("baichuan")
 }
 
 func (a *BaichuanAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {

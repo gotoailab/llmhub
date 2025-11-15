@@ -1,6 +1,7 @@
 package adapters
 
 import (
+	"github.com/aihub/internal/models"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -9,7 +10,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aihub/internal/models"
 )
 
 type DeepSeekAdapter struct {
@@ -33,8 +33,8 @@ func NewDeepSeekAdapter(apiKey, baseURL string) (Adapter, error) {
 	}, nil
 }
 
-func (a *DeepSeekAdapter) GetProvider() string {
-	return "deepseek"
+func (a *DeepSeekAdapter) GetProvider() Provider {
+	return Provider("deepseek")
 }
 
 func (a *DeepSeekAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {
