@@ -1,3 +1,5 @@
+[[中文介绍]](https://github.com/gotoailab/llmhub/blob/main/README_CN.md)  |  [[Join Discord]](https://discord.gg/B3FwBSQq)
+
 # LLMHub - Unified LLM API Client Library
 
 LLMHub is a unified LLM API client library developed in Golang, providing OpenAI API-compatible interfaces and supporting multiple LLM providers. It can be imported directly into your project as a library.
