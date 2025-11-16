@@ -41,6 +41,8 @@ func main() {
 			resp.Usage.TotalTokens,
 			resp.Usage.PromptTokens,
 			resp.Usage.CompletionTokens)
+	} else {
+		log.Fatal("没有回复")
 	}
 }
 
