@@ -1,18 +1,18 @@
-# LLMHub - Unified LLM API Client Library
+# LLMHub - 统一大模型 API 客户端库
 
-LLMHub is a unified LLM API client library developed in Golang, providing OpenAI API-compatible interfaces and supporting multiple LLM providers. It can be imported directly into your project as a library.
+LLMHub 是一个用 Golang 开发的统一大模型 API 客户端库，提供与 OpenAI API 对齐的接口，支持多种大模型提供商。可以作为库直接导入到你的项目中。
 
-## Features
+## 功能特性
 
-- ✅ **OpenAI Compatible Interface**: Fully compatible with OpenAI API format
-- ✅ **Multi-Model Support**: Supports 20+ LLM providers
-- ✅ **Easy to Use**: Similar usage to OpenAI SDK
-- ✅ **Type Safe**: Complete type definitions
-- ✅ **Streaming Response**: Supports streaming output
+- ✅ **OpenAI 兼容接口**：完全兼容 OpenAI API 格式
+- ✅ **多模型支持**：支持 20+ 种大模型提供商
+- ✅ **简单易用**：类似 OpenAI SDK 的使用方式
+- ✅ **类型安全**：完整的类型定义
+- ✅ **流式响应**：支持流式输出
 
-## Supported Model Providers
+## 支持的模型提供商
 
-### International Models
+### 国际模型
 - OpenAI (GPT-3.5, GPT-4, etc.)
 - Anthropic Claude
 - Google Gemini / PaLM2
@@ -24,34 +24,34 @@ LLMHub is a unified LLM API client library developed in Golang, providing OpenAI
 - Together.ai
 - Novita.ai
 
-### Domestic Models
+### 国内模型
 - Qwen (通义千问)
-- SiliconFlow (硅基流动)
-- Doubao (豆包, ByteDance)
-- Ernie (文心一言, Baidu)
-- Spark (讯飞星火)
-- ChatGLM (智谱)
-- 360 Brain (360智脑)
-- Hunyuan (腾讯混元, Tencent)
+- 硅基流动 (SiliconFlow)
+- 豆包（字节跳动）
+- 文心一言（百度）
+- 讯飞星火
+- ChatGLM（智谱）
+- 360智脑
+- 腾讯混元
 - Moonshot AI
-- Baichuan (百川大模型)
+- 百川大模型
 - MINIMAX
-- Yi (零一万物)
-- StepFun (阶跃星辰)
+- 零一万物
+- 阶跃星辰
 - Coze
 
-### Local Models
+### 本地模型
 - Ollama
 
-## Installation
+## 安装
 
 ```bash
 go get github.com/gotoailab/llmhub
 ```
 
-## Quick Start
+## 快速开始
 
-### Basic Usage
+### 基本使用
 
 ```go
 package main
@@ -65,7 +65,7 @@ import (
 )
 
 func main() {
-    // Create client
+    // 创建客户端
     client, err := llmhub.NewClient(llmhub.ClientConfig{
         APIKey:   "your-api-key",
         Provider: llmhub.ProviderOpenAI,
@@ -75,12 +75,12 @@ func main() {
         log.Fatal(err)
     }
 
-    // Send request
+    // 发送请求
     ctx := context.Background()
     resp, err := client.ChatCompletions(ctx, llmhub.ChatCompletionRequest{
         Model: "gpt-3.5-turbo",
         Messages: []llmhub.ChatMessage{
-            {Role: "user", Content: "Hello, please introduce yourself"},
+            {Role: "user", Content: "你好，请介绍一下你自己"},
         },
         Temperature: floatPtr(0.7),
         MaxTokens:   intPtr(500),
@@ -89,7 +89,7 @@ func main() {
         log.Fatal(err)
     }
 
-    // Handle response
+    // 处理响应
     if len(resp.Choices) > 0 {
         fmt.Println(resp.Choices[0].Message.Content)
     }
@@ -104,7 +104,7 @@ func intPtr(i int) *int {
 }
 ```
 
-### Using Different Providers
+### 使用不同提供商
 
 ```go
 // Claude
@@ -129,13 +129,13 @@ client, _ := llmhub.NewClient(llmhub.ClientConfig{
 })
 ```
 
-### Streaming Response
+### 流式响应
 
 ```go
 stream, err := client.ChatCompletionsStream(ctx, llmhub.ChatCompletionRequest{
     Model: "gpt-3.5-turbo",
     Messages: []llmhub.ChatMessage{
-        {Role: "user", Content: "Write a poem about spring"},
+        {Role: "user", Content: "写一首关于春天的诗"},
     },
     Stream: true,
 })
@@ -144,7 +144,7 @@ if err != nil {
 }
 defer stream.Close()
 
-// Read streaming data
+// 读取流式数据
 buf := make([]byte, 4096)
 for {
     n, err := stream.Read(buf)
@@ -158,27 +158,27 @@ for {
 }
 ```
 
-## API Documentation
+## API 文档
 
 ### Client
 
 #### NewClient
 
-Create a new client instance.
+创建新的客户端实例。
 
 ```go
 func NewClient(config ClientConfig) (*Client, error)
 ```
 
-**Parameters:**
-- `config.APIKey`: API Key of the model provider (required)
-- `config.Provider`: Model provider (required)
-- `config.BaseURL`: Optional API base URL
-- `config.Model`: Optional default model name
+**参数：**
+- `config.APIKey`: 模型提供商的 API Key（必需）
+- `config.Provider`: 模型提供商（必需）
+- `config.BaseURL`: 可选的 API 基础 URL
+- `config.Model`: 可选的默认模型名称
 
 #### ChatCompletions
 
-Create a chat completion request (non-streaming).
+创建聊天完成请求（非流式）。
 
 ```go
 func (c *Client) ChatCompletions(ctx context.Context, req ChatCompletionRequest) (*ChatCompletionResponse, error)
@@ -186,7 +186,7 @@ func (c *Client) ChatCompletions(ctx context.Context, req ChatCompletionRequest)
 
 #### ChatCompletionsStream
 
-Create a streaming chat completion request.
+创建流式聊天完成请求。
 
 ```go
 func (c *Client) ChatCompletionsStream(ctx context.Context, req ChatCompletionRequest) (io.ReadCloser, error)
@@ -194,35 +194,35 @@ func (c *Client) ChatCompletionsStream(ctx context.Context, req ChatCompletionRe
 
 #### GetProvider
 
-Get the provider name used by the current client.
+获取当前客户端使用的提供商名称。
 
 ```go
-func (c *Client) GetProvider() Provider
+func (c *Client) GetProvider() string
 ```
 
-## Supported Provider Constants
+## 支持的 Provider 常量
 
 ```go
 ProviderOpenAI      // OpenAI
 ProviderClaude      // Anthropic Claude
 ProviderDeepSeek    // DeepSeek
-ProviderQwen        // Qwen (通义千问)
-ProviderSiliconFlow // SiliconFlow (硅基流动)
+ProviderQwen        // 通义千问
+ProviderSiliconFlow // 硅基流动
 ProviderGemini      // Google Gemini
 ProviderMistral     // Mistral AI
-ProviderDoubao      // Doubao (豆包)
-ProviderErnie       // Ernie (文心一言)
-ProviderSpark       // Spark (讯飞星火)
+ProviderDoubao      // 豆包
+ProviderErnie       // 文心一言
+ProviderSpark       // 讯飞星火
 ProviderChatGLM     // ChatGLM
-Provider360         // 360 Brain (360智脑)
-ProviderHunyuan     // Hunyuan (腾讯混元)
+Provider360         // 360智脑
+ProviderHunyuan     // 腾讯混元
 ProviderMoonshot    // Moonshot AI
-ProviderBaichuan    // Baichuan (百川)
+ProviderBaichuan    // 百川
 ProviderMiniMax     // MINIMAX
 ProviderGroq        // Groq
 ProviderOllama      // Ollama
-ProviderYi          // Yi (零一万物)
-ProviderStepFun     // StepFun (阶跃星辰)
+ProviderYi          // 零一万物
+ProviderStepFun     // 阶跃星辰
 ProviderCoze        // Coze
 ProviderCohere      // Cohere
 ProviderTogether    // together.ai
@@ -230,7 +230,7 @@ ProviderNovita      // novita.ai
 ProviderXAI         // xAI
 ```
 
-## Type Definitions
+## 类型定义
 
 ### ChatCompletionRequest
 
@@ -245,7 +245,7 @@ type ChatCompletionRequest struct {
     PresencePenalty  *float64
     FrequencyPenalty *float64
     Stop             []string
-    // ... more fields
+    // ... 更多字段
 }
 ```
 
@@ -262,53 +262,38 @@ type ChatCompletionResponse struct {
 }
 ```
 
-## Testing
+## 测试
 
-Run tests:
+运行测试：
 
 ```bash
 go test ./...
 ```
 
-Run specific tests:
+运行特定测试：
 
 ```bash
 go test -v ./client_test.go
 ```
 
-## Project Structure
+## 项目结构
 
 ```
 .
-├── client.go              # Client implementation
-├── types.go               # Type definitions
-├── provider.go            # Provider enum definitions
-├── init.go                # Adapter registration
-├── examples/             # Usage examples
+├── client.go              # 客户端实现
+├── types.go               # 类型定义
+├── init.go                # 适配器注册
 ├── internal/
-│   ├── adapters/          # Model adapters
-│   ├── models/            # Internal model definitions
+│   ├── adapters/          # 模型适配器
+│   ├── models/            # 内部模型定义
 │   └── ...
-└── cmd/server/            # HTTP server (optional)
+└── cmd/server/            # HTTP 服务（可选）
 ```
 
-## Examples
+## 贡献
 
-See the [examples](./examples/) directory for more usage examples:
-
-- **basic**: Basic usage example
-- **multiple_providers**: Using different providers
-- **stream**: Streaming response example
-- **error_handling**: Error handling examples
-- **conversation**: Multi-turn conversation example
-- **list_providers**: List all supported providers
-- **parameters**: Parameter configuration examples
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit Issues and Pull Requests.
+欢迎提交 Issue 和 Pull Request！
 
 ## License
 
 MIT
-

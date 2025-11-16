@@ -1,16 +1,16 @@
-# 使用指南
+# Usage Guide
 
-## 快速开始
+## Quick Start
 
-### 1. 配置
+### 1. Configuration
 
-复制示例配置文件并修改：
+Copy the example configuration file and modify it:
 
 ```bash
 cp config.yaml.example config.yaml
 ```
 
-编辑 `config.yaml`，填入你的 API Keys：
+Edit `config.yaml` and fill in your API Keys:
 
 ```yaml
 server:
@@ -19,60 +19,60 @@ server:
 
 auth:
   api_keys:
-    - "sk-aihub-your-api-key-here"  # 客户端使用的认证 Key
+    - "sk-llmhub-your-api-key-here"  # Authentication key for clients
 
 models:
   - name: "gpt-3.5-turbo"
     provider: "openai"
-    api_key: "sk-your-openai-api-key"  # 模型的实际 API Key
+    api_key: "sk-your-openai-api-key"  # Actual API key for the model
     base_url: "https://api.openai.com/v1"
 ```
 
-### 2. 运行服务
+### 2. Run the Server
 
 ```bash
 go run cmd/server/main.go
 ```
 
-或者先构建：
+Or build first:
 
 ```bash
-go build -o aihub cmd/server/main.go
-./aihub
+go build -o llmhub cmd/server/main.go
+./llmhub
 ```
 
-### 3. 使用示例
+### 3. Usage Examples
 
-#### 使用 curl
+#### Using curl
 
 ```bash
 curl http://localhost:8080/v1/chat/completions \
-  -H "Authorization: Bearer sk-aihub-your-api-key-here" \
+  -H "Authorization: Bearer sk-llmhub-your-api-key-here" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "gpt-3.5-turbo",
     "messages": [
-      {"role": "user", "content": "你好，请介绍一下你自己"}
+      {"role": "user", "content": "Hello, please introduce yourself"}
     ],
     "temperature": 0.7,
     "max_tokens": 500
   }'
 ```
 
-#### 使用 Python
+#### Using Python
 
 ```python
 import requests
 
 url = "http://localhost:8080/v1/chat/completions"
 headers = {
-    "Authorization": "Bearer sk-aihub-your-api-key-here",
+    "Authorization": "Bearer sk-llmhub-your-api-key-here",
     "Content-Type": "application/json"
 }
 data = {
     "model": "gpt-3.5-turbo",
     "messages": [
-        {"role": "user", "content": "你好，请介绍一下你自己"}
+        {"role": "user", "content": "Hello, please introduce yourself"}
     ],
     "temperature": 0.7,
     "max_tokens": 500
@@ -82,20 +82,20 @@ response = requests.post(url, json=data, headers=headers)
 print(response.json())
 ```
 
-#### 使用 OpenAI SDK（完全兼容）
+#### Using OpenAI SDK (Fully Compatible)
 
 ```python
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="sk-aihub-your-api-key-here",
+    api_key="sk-llmhub-your-api-key-here",
     base_url="http://localhost:8080/v1"
 )
 
 response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[
-        {"role": "user", "content": "你好，请介绍一下你自己"}
+        {"role": "user", "content": "Hello, please introduce yourself"}
     ],
     temperature=0.7,
     max_tokens=500
@@ -104,29 +104,29 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
-#### 流式响应
+#### Streaming Response
 
 ```bash
 curl http://localhost:8080/v1/chat/completions \
-  -H "Authorization: Bearer sk-aihub-your-api-key-here" \
+  -H "Authorization: Bearer sk-llmhub-your-api-key-here" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "gpt-3.5-turbo",
     "messages": [
-      {"role": "user", "content": "写一首关于春天的诗"}
+      {"role": "user", "content": "Write a poem about spring"}
     ],
     "stream": true
   }'
 ```
 
-### 4. 查看可用模型
+### 4. List Available Models
 
 ```bash
 curl http://localhost:8080/v1/models \
-  -H "Authorization: Bearer sk-aihub-your-api-key-here"
+  -H "Authorization: Bearer sk-llmhub-your-api-key-here"
 ```
 
-## 支持的模型提供商
+## Supported Model Providers
 
 ### OpenAI
 - `gpt-3.5-turbo`
@@ -148,15 +148,15 @@ curl http://localhost:8080/v1/models \
 - `qwen-plus`
 - `qwen-max`
 
-### 硅基流动 (SiliconFlow)
-- 支持所有通过硅基流动平台提供的模型
+### SiliconFlow (硅基流动)
+- Supports all models provided through the SiliconFlow platform
 
-## API 端点
+## API Endpoints
 
 ### POST /v1/chat/completions
-创建聊天完成请求。
+Create a chat completion request.
 
-**请求体：**
+**Request Body:**
 ```json
 {
   "model": "gpt-3.5-turbo",
@@ -170,26 +170,26 @@ curl http://localhost:8080/v1/models \
 ```
 
 ### GET /v1/models
-列出所有可用的模型。
+List all available models.
 
 ### GET /health
-健康检查端点（无需认证）。
+Health check endpoint (no authentication required).
 
-## 注意事项
+## Important Notes
 
-1. **API Key 管理**：
-   - `auth.api_keys` 中的 Key 用于客户端认证
-   - `models[].api_key` 是各个模型提供商的实际 API Key
+1. **API Key Management**:
+   - Keys in `auth.api_keys` are used for client authentication
+   - `models[].api_key` is the actual API key for each model provider
 
-2. **模型名称**：
-   - 模型名称在配置文件中定义，可以自定义
-   - 客户端调用时使用配置中定义的 `name`
+2. **Model Names**:
+   - Model names are defined in the configuration file and can be customized
+   - Clients use the `name` defined in the configuration when making calls
 
-3. **流式响应**：
-   - 设置 `"stream": true` 启用流式输出
-   - 响应格式为 Server-Sent Events (SSE)
+3. **Streaming Response**:
+   - Set `"stream": true` to enable streaming output
+   - Response format is Server-Sent Events (SSE)
 
-4. **错误处理**：
-   - 所有错误都遵循 OpenAI 的错误响应格式
-   - 检查响应中的 `error` 字段获取详细信息
+4. **Error Handling**:
+   - All errors follow the OpenAI error response format
+   - Check the `error` field in the response for detailed information
 
