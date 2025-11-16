@@ -1,7 +1,6 @@
 package adapters
 
 import (
-	"github.com/aihub/internal/models"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -10,6 +9,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gotoailab/llmhub/internal/models"
 )
 
 type SiliconFlowAdapter struct {
@@ -23,7 +23,7 @@ func NewSiliconFlowAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://api.siliconflow.cn/v1"
 	}
-	
+
 	return &SiliconFlowAdapter{
 		apiKey:  apiKey,
 		baseURL: baseURL,
@@ -40,7 +40,7 @@ func (a *SiliconFlowAdapter) GetProvider() Provider {
 func (a *SiliconFlowAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {
 	// 硅基流动使用 OpenAI 兼容的 API
 	sfReq := a.convertToOpenAIFormat(req)
-	
+
 	reqBody, err := json.Marshal(sfReq)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
@@ -76,7 +76,7 @@ func (a *SiliconFlowAdapter) ChatCompletion(ctx context.Context, req *models.Cha
 func (a *SiliconFlowAdapter) ChatCompletionStream(ctx context.Context, req *models.ChatCompletionRequest) (io.ReadCloser, error) {
 	sfReq := a.convertToOpenAIFormat(req)
 	sfReq["stream"] = true
-	
+
 	reqBody, err := json.Marshal(sfReq)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
@@ -109,7 +109,7 @@ func (a *SiliconFlowAdapter) convertToOpenAIFormat(req *models.ChatCompletionReq
 		msgMap := map[string]interface{}{
 			"role": msg.Role,
 		}
-		
+
 		switch v := msg.Content.(type) {
 		case string:
 			msgMap["content"] = v
@@ -118,7 +118,7 @@ func (a *SiliconFlowAdapter) convertToOpenAIFormat(req *models.ChatCompletionReq
 		default:
 			msgMap["content"] = fmt.Sprintf("%v", v)
 		}
-		
+
 		messages = append(messages, msgMap)
 	}
 
@@ -142,5 +142,3 @@ func (a *SiliconFlowAdapter) convertToOpenAIFormat(req *models.ChatCompletionReq
 
 	return result
 }
-
-

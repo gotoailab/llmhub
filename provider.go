@@ -1,20 +1,20 @@
-package aihub
+package llmhub
 
 // Provider 支持的模型提供商枚举
 type Provider string
 
 const (
 	// 国际模型
-	ProviderOpenAI      Provider = "openai"      // OpenAI
-	ProviderClaude      Provider = "claude"      // Anthropic Claude
-	ProviderGemini      Provider = "gemini"      // Google Gemini / PaLM2
-	ProviderMistral     Provider = "mistral"     // Mistral AI
-	ProviderDeepSeek    Provider = "deepseek"    // DeepSeek
-	ProviderGroq        Provider = "groq"        // Groq
-	ProviderCohere      Provider = "cohere"      // Cohere
-	ProviderXAI         Provider = "xai"         // xAI
-	ProviderTogether    Provider = "together"    // together.ai
-	ProviderNovita      Provider = "novita"      // novita.ai
+	ProviderOpenAI   Provider = "openai"   // OpenAI
+	ProviderClaude   Provider = "claude"   // Anthropic Claude
+	ProviderGemini   Provider = "gemini"   // Google Gemini / PaLM2
+	ProviderMistral  Provider = "mistral"  // Mistral AI
+	ProviderDeepSeek Provider = "deepseek" // DeepSeek
+	ProviderGroq     Provider = "groq"     // Groq
+	ProviderCohere   Provider = "cohere"   // Cohere
+	ProviderXAI      Provider = "xai"      // xAI
+	ProviderTogether Provider = "together" // together.ai
+	ProviderNovita   Provider = "novita"   // novita.ai
 
 	// 国内模型
 	ProviderQwen        Provider = "qwen"        // 通义千问
@@ -28,7 +28,7 @@ const (
 	ProviderMoonshot    Provider = "moonshot"    // Moonshot AI
 	ProviderBaichuan    Provider = "baichuan"    // 百川大模型
 	ProviderMiniMax     Provider = "minimax"     // MINIMAX
-	ProviderYi          Provider = "yi"         // 零一万物
+	ProviderYi          Provider = "yi"          // 零一万物
 	ProviderStepFun     Provider = "stepfun"     // 阶跃星辰
 	ProviderCoze        Provider = "coze"        // Coze
 
@@ -87,4 +87,3 @@ func AllProviders() []Provider {
 		ProviderOllama,
 	}
 }
-

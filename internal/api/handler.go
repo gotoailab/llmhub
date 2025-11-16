@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aihub/internal/adapters"
-	"github.com/aihub/internal/config"
-	"github.com/aihub/internal/models"
 	"github.com/gin-gonic/gin"
+	"github.com/gotoailab/llmhub/internal/adapters"
+	"github.com/gotoailab/llmhub/internal/config"
+	"github.com/gotoailab/llmhub/internal/models"
 )
 
 type Handler struct{}

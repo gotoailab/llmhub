@@ -1,7 +1,7 @@
-package aihub
+package llmhub
 
 import (
-	"github.com/aihub/internal/adapters"
+	"github.com/gotoailab/llmhub/internal/adapters"
 )
 
 func init() {

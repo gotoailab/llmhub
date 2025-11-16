@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/aihub/internal/models"
+	"github.com/gotoailab/llmhub/internal/models"
 )
 
 // Provider 提供商类型（与 Provider 兼容）

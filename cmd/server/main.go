@@ -6,39 +6,39 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/aihub"
-	"github.com/aihub/internal/adapters"
-	"github.com/aihub/internal/api"
-	"github.com/aihub/internal/config"
+	"github.com/gotoailab/llmhub"
+	"github.com/gotoailab/llmhub/internal/adapters"
+	"github.com/gotoailab/llmhub/internal/api"
+	"github.com/gotoailab/llmhub/internal/config"
 )
 
 func init() {
 	// 注册所有适配器（使用枚举）
-	adapters.Register(adapters.Provider(aihub.ProviderOpenAI), adapters.NewOpenAIAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderClaude), adapters.NewClaudeAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderDeepSeek), adapters.NewDeepSeekAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderQwen), adapters.NewQwenAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderSiliconFlow), adapters.NewSiliconFlowAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderGemini), adapters.NewGeminiAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderMistral), adapters.NewMistralAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderDoubao), adapters.NewDoubaoAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderErnie), adapters.NewErnieAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderSpark), adapters.NewSparkAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderChatGLM), adapters.NewChatglmAdapter)
-	adapters.Register(adapters.Provider(aihub.Provider360), adapters.New360Adapter)
-	adapters.Register(adapters.Provider(aihub.ProviderHunyuan), adapters.NewHunyuanAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderMoonshot), adapters.NewMoonshotAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderBaichuan), adapters.NewBaichuanAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderMiniMax), adapters.NewMinimaxAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderGroq), adapters.NewGroqAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderOllama), adapters.NewOllamaAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderYi), adapters.NewYiAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderStepFun), adapters.NewStepfunAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderCoze), adapters.NewCozeAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderCohere), adapters.NewCohereAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderTogether), adapters.NewTogetherAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderNovita), adapters.NewNovitaAdapter)
-	adapters.Register(adapters.Provider(aihub.ProviderXAI), adapters.NewXaiAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderOpenAI), adapters.NewOpenAIAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderClaude), adapters.NewClaudeAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderDeepSeek), adapters.NewDeepSeekAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderQwen), adapters.NewQwenAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderSiliconFlow), adapters.NewSiliconFlowAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderGemini), adapters.NewGeminiAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderMistral), adapters.NewMistralAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderDoubao), adapters.NewDoubaoAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderErnie), adapters.NewErnieAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderSpark), adapters.NewSparkAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderChatGLM), adapters.NewChatglmAdapter)
+	adapters.Register(adapters.Provider(llmhub.Provider360), adapters.New360Adapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderHunyuan), adapters.NewHunyuanAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderMoonshot), adapters.NewMoonshotAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderBaichuan), adapters.NewBaichuanAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderMiniMax), adapters.NewMinimaxAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderGroq), adapters.NewGroqAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderOllama), adapters.NewOllamaAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderYi), adapters.NewYiAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderStepFun), adapters.NewStepfunAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderCoze), adapters.NewCozeAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderCohere), adapters.NewCohereAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderTogether), adapters.NewTogetherAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderNovita), adapters.NewNovitaAdapter)
+	adapters.Register(adapters.Provider(llmhub.ProviderXAI), adapters.NewXaiAdapter)
 }
 
 func main() {

@@ -46,7 +46,7 @@ AIHub 是一个用 Golang 开发的统一大模型 API 客户端库，提供与 
 ## 安装
 
 ```bash
-go get github.com/aihub
+go get github.com/gotoailab/llmhub
 ```
 
 ## 快速开始
@@ -61,14 +61,14 @@ import (
     "fmt"
     "log"
     
-    "github.com/aihub"
+    "github.com/gotoailab/llmhub"
 )
 
 func main() {
     // 创建客户端
-    client, err := aihub.NewClient(aihub.ClientConfig{
+    client, err := llmhub.NewClient(llmhub.ClientConfig{
         APIKey:   "your-api-key",
-        Provider: aihub.ProviderOpenAI,
+        Provider: llmhub.ProviderOpenAI,
         Model:    "gpt-3.5-turbo",
     })
     if err != nil {
@@ -77,9 +77,9 @@ func main() {
 
     // 发送请求
     ctx := context.Background()
-    resp, err := client.ChatCompletions(ctx, aihub.ChatCompletionRequest{
+    resp, err := client.ChatCompletions(ctx, llmhub.ChatCompletionRequest{
         Model: "gpt-3.5-turbo",
-        Messages: []aihub.ChatMessage{
+        Messages: []llmhub.ChatMessage{
             {Role: "user", Content: "你好，请介绍一下你自己"},
         },
         Temperature: floatPtr(0.7),
@@ -108,23 +108,23 @@ func intPtr(i int) *int {
 
 ```go
 // Claude
-client, _ := aihub.NewClient(aihub.ClientConfig{
+client, _ := llmhub.NewClient(llmhub.ClientConfig{
     APIKey:   "sk-ant-your-key",
-    Provider: aihub.ProviderClaude,
+    Provider: llmhub.ProviderClaude,
     Model:    "claude-3-sonnet",
 })
 
 // DeepSeek
-client, _ := aihub.NewClient(aihub.ClientConfig{
+client, _ := llmhub.NewClient(llmhub.ClientConfig{
     APIKey:   "your-deepseek-key",
-    Provider: aihub.ProviderDeepSeek,
+    Provider: llmhub.ProviderDeepSeek,
     Model:    "deepseek-chat",
 })
 
 // Qwen
-client, _ := aihub.NewClient(aihub.ClientConfig{
+client, _ := llmhub.NewClient(llmhub.ClientConfig{
     APIKey:   "your-qwen-key",
-    Provider: aihub.ProviderQwen,
+    Provider: llmhub.ProviderQwen,
     Model:    "qwen-turbo",
 })
 ```
@@ -132,9 +132,9 @@ client, _ := aihub.NewClient(aihub.ClientConfig{
 ### 流式响应
 
 ```go
-stream, err := client.ChatCompletionsStream(ctx, aihub.ChatCompletionRequest{
+stream, err := client.ChatCompletionsStream(ctx, llmhub.ChatCompletionRequest{
     Model: "gpt-3.5-turbo",
-    Messages: []aihub.ChatMessage{
+    Messages: []llmhub.ChatMessage{
         {Role: "user", Content: "写一首关于春天的诗"},
     },
     Stream: true,

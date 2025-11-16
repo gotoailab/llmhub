@@ -8,14 +8,14 @@ import (
 	"os"
 	"strings"
 
-	"github.com/aihub"
+	"github.com/gotoailab/llmhub"
 )
 
 func main() {
 	// 创建客户端
-	client, err := aihub.NewClient(aihub.ClientConfig{
+	client, err := llmhub.NewClient(llmhub.ClientConfig{
 		APIKey:   "your-api-key-here",
-		Provider: aihub.ProviderOpenAI,
+		Provider: llmhub.ProviderOpenAI,
 		Model:    "gpt-3.5-turbo",
 	})
 	if err != nil {
@@ -26,7 +26,7 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	// 保存对话历史
-	messages := []aihub.ChatMessage{
+	messages := []llmhub.ChatMessage{
 		{Role: "system", Content: "你是一个友好的AI助手，请用简洁明了的方式回答问题。"},
 	}
 
@@ -50,14 +50,14 @@ func main() {
 		}
 
 		// 添加用户消息
-		messages = append(messages, aihub.ChatMessage{
+		messages = append(messages, llmhub.ChatMessage{
 			Role:    "user",
 			Content: userInput,
 		})
 
 		// 发送请求
-		resp, err := client.ChatCompletions(ctx, aihub.ChatCompletionRequest{
-			Messages: messages,
+		resp, err := client.ChatCompletions(ctx, llmhub.ChatCompletionRequest{
+			Messages:    messages,
 			Temperature: floatPtr(0.7),
 		})
 		if err != nil {
@@ -71,7 +71,7 @@ func main() {
 			fmt.Printf("AI: %s\n\n", assistantReply)
 
 			// 添加助手回复到历史
-			messages = append(messages, aihub.ChatMessage{
+			messages = append(messages, llmhub.ChatMessage{
 				Role:    "assistant",
 				Content: assistantReply,
 			})
@@ -82,4 +82,3 @@ func main() {
 func floatPtr(f float64) *float64 {
 	return &f
 }
-

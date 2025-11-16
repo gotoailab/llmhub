@@ -7,14 +7,14 @@ import (
 	"io"
 	"log"
 
-	"github.com/aihub"
+	"github.com/gotoailab/llmhub"
 )
 
 func main() {
 	// 创建客户端
-	client, err := aihub.NewClient(aihub.ClientConfig{
+	client, err := llmhub.NewClient(llmhub.ClientConfig{
 		APIKey:   "your-api-key-here",
-		Provider: aihub.ProviderOpenAI,
+		Provider: llmhub.ProviderOpenAI,
 		Model:    "gpt-3.5-turbo",
 	})
 	if err != nil {
@@ -24,9 +24,9 @@ func main() {
 	ctx := context.Background()
 
 	// 创建流式请求
-	stream, err := client.ChatCompletionsStream(ctx, aihub.ChatCompletionRequest{
+	stream, err := client.ChatCompletionsStream(ctx, llmhub.ChatCompletionRequest{
 		Model: "gpt-3.5-turbo",
-		Messages: []aihub.ChatMessage{
+		Messages: []llmhub.ChatMessage{
 			{Role: "user", Content: "写一首关于春天的短诗，每行不超过10个字"},
 		},
 		Stream: true,
@@ -62,4 +62,3 @@ func main() {
 	fmt.Println("\n---")
 	fmt.Println("流式响应完成")
 }
-

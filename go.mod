@@ -1,4 +1,4 @@
-module github.com/aihub
+module github.com/gotoailab/llmhub
 
 go 1.21
 

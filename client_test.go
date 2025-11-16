@@ -1,4 +1,4 @@
-package aihub
+package llmhub
 
 import (
 	"context"
@@ -119,4 +119,3 @@ func TestClient_ChatCompletions_Validation(t *testing.T) {
 		t.Error("Expected error when model is not specified")
 	}
 }
-

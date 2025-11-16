@@ -1,36 +1,36 @@
-package aihub
+package llmhub
 
 // ChatCompletionRequest OpenAI 兼容的请求结构
 type ChatCompletionRequest struct {
-	Model            string                 `json:"model"`
-	Messages         []ChatMessage          `json:"messages"`
-	Temperature      *float64               `json:"temperature,omitempty"`
-	TopP             *float64               `json:"top_p,omitempty"`
-	MaxTokens        *int                   `json:"max_tokens,omitempty"`
-	Stream           bool                   `json:"stream,omitempty"`
-	PresencePenalty  *float64               `json:"presence_penalty,omitempty"`
-	FrequencyPenalty *float64               `json:"frequency_penalty,omitempty"`
-	Stop             []string               `json:"stop,omitempty"`
-	User             string                 `json:"user,omitempty"`
-	Functions        []FunctionDefinition   `json:"functions,omitempty"`
-	FunctionCall     interface{}            `json:"function_call,omitempty"`
-	LogitBias        map[string]int         `json:"logit_bias,omitempty"`
-	LogProbs         bool                   `json:"logprobs,omitempty"`
-	TopLogProbs      *int                   `json:"top_logprobs,omitempty"`
-	ResponseFormat   *ResponseFormat        `json:"response_format,omitempty"`
-	Seed             *int                   `json:"seed,omitempty"`
-	Tools            []Tool                 `json:"tools,omitempty"`
-	ToolChoice       interface{}            `json:"tool_choice,omitempty"`
+	Model            string               `json:"model"`
+	Messages         []ChatMessage        `json:"messages"`
+	Temperature      *float64             `json:"temperature,omitempty"`
+	TopP             *float64             `json:"top_p,omitempty"`
+	MaxTokens        *int                 `json:"max_tokens,omitempty"`
+	Stream           bool                 `json:"stream,omitempty"`
+	PresencePenalty  *float64             `json:"presence_penalty,omitempty"`
+	FrequencyPenalty *float64             `json:"frequency_penalty,omitempty"`
+	Stop             []string             `json:"stop,omitempty"`
+	User             string               `json:"user,omitempty"`
+	Functions        []FunctionDefinition `json:"functions,omitempty"`
+	FunctionCall     interface{}          `json:"function_call,omitempty"`
+	LogitBias        map[string]int       `json:"logit_bias,omitempty"`
+	LogProbs         bool                 `json:"logprobs,omitempty"`
+	TopLogProbs      *int                 `json:"top_logprobs,omitempty"`
+	ResponseFormat   *ResponseFormat      `json:"response_format,omitempty"`
+	Seed             *int                 `json:"seed,omitempty"`
+	Tools            []Tool               `json:"tools,omitempty"`
+	ToolChoice       interface{}          `json:"tool_choice,omitempty"`
 }
 
 // ChatMessage 聊天消息
 type ChatMessage struct {
-	Role         string          `json:"role"`
-	Content      interface{}     `json:"content"`
-	Name         string          `json:"name,omitempty"`
-	FunctionCall *FunctionCall   `json:"function_call,omitempty"`
-	ToolCalls    []ToolCall      `json:"tool_calls,omitempty"`
-	ToolCallID   string          `json:"tool_call_id,omitempty"`
+	Role         string        `json:"role"`
+	Content      interface{}   `json:"content"`
+	Name         string        `json:"name,omitempty"`
+	FunctionCall *FunctionCall `json:"function_call,omitempty"`
+	ToolCalls    []ToolCall    `json:"tool_calls,omitempty"`
+	ToolCallID   string        `json:"tool_call_id,omitempty"`
 }
 
 // FunctionDefinition 函数定义
@@ -55,7 +55,7 @@ type ToolCall struct {
 
 // Tool 工具
 type Tool struct {
-	Type     string           `json:"type"`
+	Type     string             `json:"type"`
 	Function FunctionDefinition `json:"function"`
 }
 
@@ -77,9 +77,9 @@ type ChatCompletionResponse struct {
 
 // ChatCompletionChoice 聊天完成选择
 type ChatCompletionChoice struct {
-	Index        int         `json:"index"`
-	Message      ChatMessage `json:"message"`
-	FinishReason string      `json:"finish_reason"`
+	Index        int          `json:"index"`
+	Message      ChatMessage  `json:"message"`
+	FinishReason string       `json:"finish_reason"`
 	Delta        *ChatMessage `json:"delta,omitempty"` // 用于流式响应
 }
 
@@ -102,4 +102,3 @@ type ErrorDetail struct {
 	Param   string `json:"param,omitempty"`
 	Code    string `json:"code,omitempty"`
 }
-

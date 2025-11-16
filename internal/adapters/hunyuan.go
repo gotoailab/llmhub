@@ -1,10 +1,10 @@
 package adapters
 
 import (
-	"github.com/aihub/internal/models"
 	"context"
 	"io"
 
+	"github.com/gotoailab/llmhub/internal/models"
 )
 
 // HunyuanAdapter 腾讯混元适配器

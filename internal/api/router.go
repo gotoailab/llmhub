@@ -1,8 +1,8 @@
 package api
 
 import (
-	"github.com/aihub/internal/auth"
 	"github.com/gin-gonic/gin"
+	"github.com/gotoailab/llmhub/internal/auth"
 )
 
 func SetupRouter(handler *Handler) *gin.Engine {
@@ -21,4 +21,3 @@ func SetupRouter(handler *Handler) *gin.Engine {
 
 	return router
 }
-

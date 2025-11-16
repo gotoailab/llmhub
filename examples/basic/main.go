@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/aihub"
+	"github.com/gotoailab/llmhub"
 )
 
 func main() {
 	// 创建客户端
-	client, err := aihub.NewClient(aihub.ClientConfig{
+	client, err := llmhub.NewClient(llmhub.ClientConfig{
 		APIKey:   "your-api-key-here",
-		Provider: aihub.ProviderOpenAI,
+		Provider: llmhub.ProviderOpenAI,
 		Model:    "gpt-3.5-turbo",
 	})
 	if err != nil {
@@ -22,9 +22,9 @@ func main() {
 	ctx := context.Background()
 
 	// 发送聊天请求
-	resp, err := client.ChatCompletions(ctx, aihub.ChatCompletionRequest{
+	resp, err := client.ChatCompletions(ctx, llmhub.ChatCompletionRequest{
 		Model: "gpt-3.5-turbo",
-		Messages: []aihub.ChatMessage{
+		Messages: []llmhub.ChatMessage{
 			{Role: "user", Content: "你好，请用一句话介绍一下你自己"},
 		},
 		Temperature: floatPtr(0.7),

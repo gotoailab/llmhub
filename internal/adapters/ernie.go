@@ -1,10 +1,10 @@
 package adapters
 
 import (
-	"github.com/aihub/internal/models"
 	"context"
 	"io"
 
+	"github.com/gotoailab/llmhub/internal/models"
 )
 
 // ErnieAdapter 文心一言（百度）适配器

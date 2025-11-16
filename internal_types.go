@@ -1,4 +1,4 @@
-package aihub
+package llmhub
 
 // 内部类型定义，用于与 adapters 包交互
 
@@ -81,4 +81,3 @@ type internalUsage struct {
 	CompletionTokens int
 	TotalTokens      int
 }
-

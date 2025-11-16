@@ -4,7 +4,7 @@ import (
 	"context"
 	"io"
 
-	"github.com/aihub/internal/models"
+	"github.com/gotoailab/llmhub/internal/models"
 )
 
 // OllamaAdapter Ollama适配器

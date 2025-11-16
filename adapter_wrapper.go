@@ -1,11 +1,11 @@
-package aihub
+package llmhub
 
 import (
 	"context"
 	"io"
 
-	"github.com/aihub/internal/adapters"
-	"github.com/aihub/internal/models"
+	"github.com/gotoailab/llmhub/internal/adapters"
+	"github.com/gotoailab/llmhub/internal/models"
 )
 
 // adapterWrapper 包装内部适配器，将客户端类型转换为适配器类型
@@ -72,7 +72,7 @@ func (w *adapterWrapper) ChatCompletionStream(ctx context.Context, req *internal
 }
 
 func (w *adapterWrapper) GetProvider() Provider {
-	// 将 adapters.Provider 转换为 aihub.Provider
+	// 将 adapters.Provider 转换为 llmhub.Provider
 	return Provider(w.adapter.GetProvider())
 }
 

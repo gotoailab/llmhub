@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/aihub/internal/models"
+	"github.com/gotoailab/llmhub/internal/models"
 )
 
 // openAICompatibleAdapter 通用的 OpenAI 兼容适配器

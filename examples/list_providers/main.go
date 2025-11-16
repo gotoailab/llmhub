@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/aihub"
+	"github.com/gotoailab/llmhub"
 )
 
 func main() {
@@ -11,41 +11,41 @@ func main() {
 	fmt.Println("================")
 
 	// 获取所有提供商
-	providers := aihub.AllProviders()
+	providers := llmhub.AllProviders()
 
 	// 按类别分组显示
-	international := []aihub.Provider{
-		aihub.ProviderOpenAI,
-		aihub.ProviderClaude,
-		aihub.ProviderGemini,
-		aihub.ProviderMistral,
-		aihub.ProviderDeepSeek,
-		aihub.ProviderGroq,
-		aihub.ProviderCohere,
-		aihub.ProviderXAI,
-		aihub.ProviderTogether,
-		aihub.ProviderNovita,
+	international := []llmhub.Provider{
+		llmhub.ProviderOpenAI,
+		llmhub.ProviderClaude,
+		llmhub.ProviderGemini,
+		llmhub.ProviderMistral,
+		llmhub.ProviderDeepSeek,
+		llmhub.ProviderGroq,
+		llmhub.ProviderCohere,
+		llmhub.ProviderXAI,
+		llmhub.ProviderTogether,
+		llmhub.ProviderNovita,
 	}
 
-	domestic := []aihub.Provider{
-		aihub.ProviderQwen,
-		aihub.ProviderSiliconFlow,
-		aihub.ProviderDoubao,
-		aihub.ProviderErnie,
-		aihub.ProviderSpark,
-		aihub.ProviderChatGLM,
-		aihub.Provider360,
-		aihub.ProviderHunyuan,
-		aihub.ProviderMoonshot,
-		aihub.ProviderBaichuan,
-		aihub.ProviderMiniMax,
-		aihub.ProviderYi,
-		aihub.ProviderStepFun,
-		aihub.ProviderCoze,
+	domestic := []llmhub.Provider{
+		llmhub.ProviderQwen,
+		llmhub.ProviderSiliconFlow,
+		llmhub.ProviderDoubao,
+		llmhub.ProviderErnie,
+		llmhub.ProviderSpark,
+		llmhub.ProviderChatGLM,
+		llmhub.Provider360,
+		llmhub.ProviderHunyuan,
+		llmhub.ProviderMoonshot,
+		llmhub.ProviderBaichuan,
+		llmhub.ProviderMiniMax,
+		llmhub.ProviderYi,
+		llmhub.ProviderStepFun,
+		llmhub.ProviderCoze,
 	}
 
-	local := []aihub.Provider{
-		aihub.ProviderOllama,
+	local := []llmhub.Provider{
+		llmhub.ProviderOllama,
 	}
 
 	fmt.Println("\n国际模型:")
@@ -72,7 +72,7 @@ func main() {
 	fmt.Printf("\n总计: %d 个提供商\n", len(providers))
 }
 
-func contains(list []aihub.Provider, item aihub.Provider) bool {
+func contains(list []llmhub.Provider, item llmhub.Provider) bool {
 	for _, p := range list {
 		if p == item {
 			return true
@@ -80,4 +80,3 @@ func contains(list []aihub.Provider, item aihub.Provider) bool {
 	}
 	return false
 }
-

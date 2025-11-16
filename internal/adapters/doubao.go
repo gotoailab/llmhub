@@ -4,7 +4,7 @@ import (
 	"context"
 	"io"
 
-	"github.com/aihub/internal/models"
+	"github.com/gotoailab/llmhub/internal/models"
 )
 
 // DoubaoAdapter 豆包（字节跳动）适配器

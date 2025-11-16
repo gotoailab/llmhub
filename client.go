@@ -1,11 +1,11 @@
-package aihub
+package llmhub
 
 import (
 	"context"
 	"fmt"
 	"io"
 
-	"github.com/aihub/internal/adapters"
+	"github.com/gotoailab/llmhub/internal/adapters"
 )
 
 // Provider 定义在 provider.go 中
@@ -34,9 +34,9 @@ type ClientConfig struct {
 // NewClient 创建新的客户端
 // 使用示例：
 //
-//	client := aihub.NewClient(aihub.ClientConfig{
+//	client := llmhub.NewClient(llmhub.ClientConfig{
 //	    APIKey: "sk-your-api-key",
-//	    Provider: aihub.ProviderOpenAI,
+//	    Provider: llmhub.ProviderOpenAI,
 //	    Model: "gpt-3.5-turbo",
 //	})
 func NewClient(config ClientConfig) (*Client, error) {
@@ -48,7 +48,7 @@ func NewClient(config ClientConfig) (*Client, error) {
 		return nil, fmt.Errorf("provider is required")
 	}
 
-	// 创建适配器（将 aihub.Provider 转换为 adapters.Provider）
+	// 创建适配器（将 llmhub.Provider 转换为 adapters.Provider）
 	adapter, err := adapters.CreateAdapter(adapters.Provider(config.Provider), config.APIKey, config.BaseURL)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create adapter: %w", err)

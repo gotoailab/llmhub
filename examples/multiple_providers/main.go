@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/aihub"
+	"github.com/gotoailab/llmhub"
 )
 
 func main() {
@@ -13,14 +13,14 @@ func main() {
 	// 定义多个提供商配置
 	providers := []struct {
 		name     string
-		provider aihub.Provider
+		provider llmhub.Provider
 		apiKey   string
 		model    string
 	}{
-		{"OpenAI", aihub.ProviderOpenAI, "sk-your-openai-key", "gpt-3.5-turbo"},
-		{"Claude", aihub.ProviderClaude, "sk-ant-your-claude-key", "claude-3-sonnet"},
-		{"DeepSeek", aihub.ProviderDeepSeek, "your-deepseek-key", "deepseek-chat"},
-		{"Qwen", aihub.ProviderQwen, "your-qwen-key", "qwen-turbo"},
+		{"OpenAI", llmhub.ProviderOpenAI, "sk-your-openai-key", "gpt-3.5-turbo"},
+		{"Claude", llmhub.ProviderClaude, "sk-ant-your-claude-key", "claude-3-sonnet"},
+		{"DeepSeek", llmhub.ProviderDeepSeek, "your-deepseek-key", "deepseek-chat"},
+		{"Qwen", llmhub.ProviderQwen, "your-qwen-key", "qwen-turbo"},
 	}
 
 	question := "用一句话解释什么是人工智能"
@@ -28,7 +28,7 @@ func main() {
 	for _, cfg := range providers {
 		fmt.Printf("\n=== 使用 %s ===\n", cfg.name)
 
-		client, err := aihub.NewClient(aihub.ClientConfig{
+		client, err := llmhub.NewClient(llmhub.ClientConfig{
 			APIKey:   cfg.apiKey,
 			Provider: cfg.provider,
 			Model:    cfg.model,
@@ -38,8 +38,8 @@ func main() {
 			continue
 		}
 
-		resp, err := client.ChatCompletions(ctx, aihub.ChatCompletionRequest{
-			Messages: []aihub.ChatMessage{
+		resp, err := client.ChatCompletions(ctx, llmhub.ChatCompletionRequest{
+			Messages: []llmhub.ChatMessage{
 				{Role: "user", Content: question},
 			},
 		})
@@ -54,4 +54,3 @@ func main() {
 		}
 	}
 }
-

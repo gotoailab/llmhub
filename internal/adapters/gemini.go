@@ -1,7 +1,6 @@
 package adapters
 
 import (
-	"github.com/aihub/internal/models"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -10,6 +9,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gotoailab/llmhub/internal/models"
 )
 
 type GeminiAdapter struct {
@@ -23,7 +23,7 @@ func NewGeminiAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://generativelanguage.googleapis.com/v1"
 	}
-	
+
 	return &GeminiAdapter{
 		apiKey:  apiKey,
 		baseURL: baseURL,
@@ -40,7 +40,7 @@ func (a *GeminiAdapter) GetProvider() Provider {
 func (a *GeminiAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {
 	// Gemini 使用 OpenAI 兼容的 API（通过 Vertex AI 或直接 API）
 	geminiReq := a.convertToOpenAIFormat(req)
-	
+
 	reqBody, err := json.Marshal(geminiReq)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
@@ -81,7 +81,7 @@ func (a *GeminiAdapter) ChatCompletion(ctx context.Context, req *models.ChatComp
 func (a *GeminiAdapter) ChatCompletionStream(ctx context.Context, req *models.ChatCompletionRequest) (io.ReadCloser, error) {
 	geminiReq := a.convertToOpenAIFormat(req)
 	geminiReq["stream"] = true
-	
+
 	reqBody, err := json.Marshal(geminiReq)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
@@ -118,7 +118,7 @@ func (a *GeminiAdapter) convertToOpenAIFormat(req *models.ChatCompletionRequest)
 		msgMap := map[string]interface{}{
 			"role": msg.Role,
 		}
-		
+
 		switch v := msg.Content.(type) {
 		case string:
 			msgMap["content"] = v
@@ -127,7 +127,7 @@ func (a *GeminiAdapter) convertToOpenAIFormat(req *models.ChatCompletionRequest)
 		default:
 			msgMap["content"] = fmt.Sprintf("%v", v)
 		}
-		
+
 		messages = append(messages, msgMap)
 	}
 
@@ -151,4 +151,3 @@ func (a *GeminiAdapter) convertToOpenAIFormat(req *models.ChatCompletionRequest)
 
 	return result
 }
-

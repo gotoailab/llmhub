@@ -1,7 +1,6 @@
 package adapters
 
 import (
-	"github.com/aihub/internal/models"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -10,6 +9,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gotoailab/llmhub/internal/models"
 )
 
 type ClaudeAdapter struct {
@@ -23,7 +23,7 @@ func NewClaudeAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://api.anthropic.com/v1"
 	}
-	
+
 	return &ClaudeAdapter{
 		apiKey:  apiKey,
 		baseURL: baseURL,
@@ -40,7 +40,7 @@ func (a *ClaudeAdapter) GetProvider() Provider {
 func (a *ClaudeAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {
 	// Claude API 格式转换
 	claudeReq := a.convertToClaudeRequest(req)
-	
+
 	reqBody, err := json.Marshal(claudeReq)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
@@ -79,7 +79,7 @@ func (a *ClaudeAdapter) ChatCompletionStream(ctx context.Context, req *models.Ch
 	// Claude 流式响应实现
 	claudeReq := a.convertToClaudeRequest(req)
 	claudeReq.Stream = true
-	
+
 	reqBody, err := json.Marshal(claudeReq)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
@@ -110,7 +110,7 @@ func (a *ClaudeAdapter) ChatCompletionStream(ctx context.Context, req *models.Ch
 // Claude 请求结构
 type ClaudeRequest struct {
 	Model       string          `json:"model"`
-	MaxTokens   int            `json:"max_tokens"`
+	MaxTokens   int             `json:"max_tokens"`
 	Messages    []ClaudeMessage `json:"messages"`
 	Temperature *float64        `json:"temperature,omitempty"`
 	TopP        *float64        `json:"top_p,omitempty"`
@@ -154,14 +154,14 @@ func (a *ClaudeAdapter) convertToClaudeRequest(req *models.ChatCompletionRequest
 		default:
 			content = fmt.Sprintf("%v", v)
 		}
-		
+
 		// Claude 使用 "user" 和 "assistant"，需要转换
 		role := msg.Role
 		if role == "system" {
 			// Claude 不支持 system role，可以合并到第一个 user message
 			continue
 		}
-		
+
 		messages = append(messages, ClaudeMessage{
 			Role:    role,
 			Content: content,
@@ -169,11 +169,11 @@ func (a *ClaudeAdapter) convertToClaudeRequest(req *models.ChatCompletionRequest
 	}
 
 	claudeReq := &ClaudeRequest{
-		Model:     a.mapModelName(req.Model),
-		Messages:  messages,
-		MaxTokens: getIntValue(req.MaxTokens),
+		Model:       a.mapModelName(req.Model),
+		Messages:    messages,
+		MaxTokens:   getIntValue(req.MaxTokens),
 		Temperature: req.Temperature,
-		TopP:      req.TopP,
+		TopP:        req.TopP,
 	}
 
 	if claudeReq.MaxTokens == 0 {
@@ -215,16 +215,14 @@ func (a *ClaudeAdapter) convertFromClaudeResponse(claudeResp *ClaudeResponse, mo
 func (a *ClaudeAdapter) mapModelName(modelName string) string {
 	// 模型名称映射
 	mapping := map[string]string{
-		"claude-3-opus":    "claude-3-opus-20240229",
-		"claude-3-sonnet":  "claude-3-sonnet-20240229",
-		"claude-3-haiku":   "claude-3-haiku-20240307",
+		"claude-3-opus":     "claude-3-opus-20240229",
+		"claude-3-sonnet":   "claude-3-sonnet-20240229",
+		"claude-3-haiku":    "claude-3-haiku-20240307",
 		"claude-3-5-sonnet": "claude-3-5-sonnet-20241022",
 	}
-	
+
 	if mapped, ok := mapping[modelName]; ok {
 		return mapped
 	}
 	return modelName
 }
-
-

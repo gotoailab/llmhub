@@ -1,7 +1,6 @@
 package adapters
 
 import (
-	"github.com/aihub/internal/models"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -10,6 +9,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gotoailab/llmhub/internal/models"
 )
 
 type DeepSeekAdapter struct {
@@ -23,7 +23,7 @@ func NewDeepSeekAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://api.deepseek.com/v1"
 	}
-	
+
 	return &DeepSeekAdapter{
 		apiKey:  apiKey,
 		baseURL: baseURL,
@@ -40,7 +40,7 @@ func (a *DeepSeekAdapter) GetProvider() Provider {
 func (a *DeepSeekAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {
 	// DeepSeek 使用 OpenAI 兼容的 API
 	deepseekReq := a.convertToOpenAIFormat(req)
-	
+
 	reqBody, err := json.Marshal(deepseekReq)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
@@ -76,7 +76,7 @@ func (a *DeepSeekAdapter) ChatCompletion(ctx context.Context, req *models.ChatCo
 func (a *DeepSeekAdapter) ChatCompletionStream(ctx context.Context, req *models.ChatCompletionRequest) (io.ReadCloser, error) {
 	deepseekReq := a.convertToOpenAIFormat(req)
 	deepseekReq["stream"] = true
-	
+
 	reqBody, err := json.Marshal(deepseekReq)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
@@ -109,7 +109,7 @@ func (a *DeepSeekAdapter) convertToOpenAIFormat(req *models.ChatCompletionReques
 		msgMap := map[string]interface{}{
 			"role": msg.Role,
 		}
-		
+
 		switch v := msg.Content.(type) {
 		case string:
 			msgMap["content"] = v
@@ -118,7 +118,7 @@ func (a *DeepSeekAdapter) convertToOpenAIFormat(req *models.ChatCompletionReques
 		default:
 			msgMap["content"] = fmt.Sprintf("%v", v)
 		}
-		
+
 		messages = append(messages, msgMap)
 	}
 
@@ -142,5 +142,3 @@ func (a *DeepSeekAdapter) convertToOpenAIFormat(req *models.ChatCompletionReques
 
 	return result
 }
-
-

@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/aihub/internal/models"
+	"github.com/gotoailab/llmhub/internal/models"
 )
 
 func init() {

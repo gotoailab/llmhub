@@ -1,7 +1,6 @@
 package adapters
 
 import (
-	"github.com/aihub/internal/models"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -10,6 +9,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gotoailab/llmhub/internal/models"
 )
 
 type MistralAdapter struct {
@@ -23,7 +23,7 @@ func NewMistralAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://api.mistral.ai/v1"
 	}
-	
+
 	return &MistralAdapter{
 		apiKey:  apiKey,
 		baseURL: baseURL,
@@ -40,7 +40,7 @@ func (a *MistralAdapter) GetProvider() Provider {
 func (a *MistralAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {
 	// Mistral 使用 OpenAI 兼容的 API
 	mistralReq := convertToOpenAIFormatGeneric(req)
-	
+
 	reqBody, err := json.Marshal(mistralReq)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
@@ -76,7 +76,7 @@ func (a *MistralAdapter) ChatCompletion(ctx context.Context, req *models.ChatCom
 func (a *MistralAdapter) ChatCompletionStream(ctx context.Context, req *models.ChatCompletionRequest) (io.ReadCloser, error) {
 	mistralReq := convertToOpenAIFormatGeneric(req)
 	mistralReq["stream"] = true
-	
+
 	reqBody, err := json.Marshal(mistralReq)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
@@ -110,7 +110,7 @@ func convertToOpenAIFormatGeneric(req *models.ChatCompletionRequest) map[string]
 		msgMap := map[string]interface{}{
 			"role": msg.Role,
 		}
-		
+
 		switch v := msg.Content.(type) {
 		case string:
 			msgMap["content"] = v
@@ -119,7 +119,7 @@ func convertToOpenAIFormatGeneric(req *models.ChatCompletionRequest) map[string]
 		default:
 			msgMap["content"] = fmt.Sprintf("%v", v)
 		}
-		
+
 		messages = append(messages, msgMap)
 	}
 
@@ -143,4 +143,3 @@ func convertToOpenAIFormatGeneric(req *models.ChatCompletionRequest) map[string]
 
 	return result
 }
-

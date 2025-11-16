@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/aihub/internal/config"
 	"github.com/gin-gonic/gin"
+	"github.com/gotoailab/llmhub/internal/config"
 )
 
 // APIKeyAuth 中间件：验证 API Key
@@ -39,7 +39,7 @@ func APIKeyAuth() gin.HandlerFunc {
 		}
 
 		apiKey := parts[1]
-		
+
 		// 验证 API Key
 		if !isValidAPIKey(apiKey) {
 			c.JSON(http.StatusUnauthorized, gin.H{
@@ -81,4 +81,3 @@ func isValidAPIKey(apiKey string) bool {
 
 	return false
 }
-

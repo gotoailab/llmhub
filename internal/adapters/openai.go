@@ -1,10 +1,11 @@
 package adapters
 
 import (
-	"github.com/aihub/internal/models"
 	"context"
 	"fmt"
 	"io"
+
+	"github.com/gotoailab/llmhub/internal/models"
 
 	"github.com/sashabaranov/go-openai"
 )
@@ -20,7 +21,7 @@ func NewOpenAIAdapter(apiKey, baseURL string) (Adapter, error) {
 		config.BaseURL = baseURL
 	}
 	client := openai.NewClientWithConfig(config)
-	
+
 	return &OpenAIAdapter{
 		client: client,
 	}, nil
@@ -44,7 +45,7 @@ func (a *OpenAIAdapter) ChatCompletion(ctx context.Context, req *models.ChatComp
 		default:
 			content = fmt.Sprintf("%v", v)
 		}
-		
+
 		messages = append(messages, openai.ChatCompletionMessage{
 			Role:    msg.Role,
 			Content: content,
@@ -108,7 +109,7 @@ func (a *OpenAIAdapter) ChatCompletionStream(ctx context.Context, req *models.Ch
 		default:
 			content = fmt.Sprintf("%v", v)
 		}
-		
+
 		messages = append(messages, openai.ChatCompletionMessage{
 			Role:    msg.Role,
 			Content: content,
@@ -160,5 +161,3 @@ func getIntValue(v *int) int {
 	}
 	return *v
 }
-
-

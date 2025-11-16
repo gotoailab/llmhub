@@ -1,7 +1,6 @@
 package adapters
 
 import (
-	"github.com/aihub/internal/models"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -10,6 +9,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/gotoailab/llmhub/internal/models"
 )
 
 type QwenAdapter struct {
@@ -23,7 +23,7 @@ func NewQwenAdapter(apiKey, baseURL string) (Adapter, error) {
 	if baseURL == "" {
 		baseURL = "https://dashscope.aliyuncs.com/api/v1"
 	}
-	
+
 	return &QwenAdapter{
 		apiKey:  apiKey,
 		baseURL: baseURL,
@@ -40,7 +40,7 @@ func (a *QwenAdapter) GetProvider() Provider {
 func (a *QwenAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {
 	// Qwen 使用 OpenAI 兼容的 API
 	qwenReq := a.convertToOpenAIFormat(req)
-	
+
 	reqBody, err := json.Marshal(qwenReq)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
@@ -78,7 +78,7 @@ func (a *QwenAdapter) ChatCompletion(ctx context.Context, req *models.ChatComple
 func (a *QwenAdapter) ChatCompletionStream(ctx context.Context, req *models.ChatCompletionRequest) (io.ReadCloser, error) {
 	qwenReq := a.convertToOpenAIFormat(req)
 	qwenReq["stream"] = true
-	
+
 	reqBody, err := json.Marshal(qwenReq)
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
@@ -107,9 +107,9 @@ func (a *QwenAdapter) ChatCompletionStream(ctx context.Context, req *models.Chat
 }
 
 type QwenResponse struct {
-	RequestID string      `json:"request_id"`
-	Output    QwenOutput  `json:"output"`
-	Usage     QwenUsage   `json:"usage"`
+	RequestID string     `json:"request_id"`
+	Output    QwenOutput `json:"output"`
+	Usage     QwenUsage  `json:"usage"`
 }
 
 type QwenOutput struct {
@@ -129,7 +129,7 @@ func (a *QwenAdapter) convertToOpenAIFormat(req *models.ChatCompletionRequest) m
 		msgMap := map[string]interface{}{
 			"role": msg.Role,
 		}
-		
+
 		switch v := msg.Content.(type) {
 		case string:
 			msgMap["content"] = v
@@ -138,12 +138,12 @@ func (a *QwenAdapter) convertToOpenAIFormat(req *models.ChatCompletionRequest) m
 		default:
 			msgMap["content"] = fmt.Sprintf("%v", v)
 		}
-		
+
 		messages = append(messages, msgMap)
 	}
 
 	result := map[string]interface{}{
-		"model":    a.mapModelName(req.Model),
+		"model": a.mapModelName(req.Model),
 		"input": map[string]interface{}{
 			"messages": messages,
 		},
@@ -208,11 +208,9 @@ func (a *QwenAdapter) mapModelName(modelName string) string {
 		"qwen-max":      "qwen-max",
 		"qwen-max-long": "qwen-max-longcontext",
 	}
-	
+
 	if mapped, ok := mapping[modelName]; ok {
 		return mapped
 	}
 	return modelName
 }
-
-
