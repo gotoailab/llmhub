@@ -5,16 +5,17 @@ type Provider string
 
 const (
 	// 国际模型
-	ProviderOpenAI   Provider = "openai"   // OpenAI
-	ProviderClaude   Provider = "claude"   // Anthropic Claude
-	ProviderGemini   Provider = "gemini"   // Google Gemini / PaLM2
-	ProviderMistral  Provider = "mistral"  // Mistral AI
-	ProviderDeepSeek Provider = "deepseek" // DeepSeek
-	ProviderGroq     Provider = "groq"     // Groq
-	ProviderCohere   Provider = "cohere"   // Cohere
-	ProviderXAI      Provider = "xai"      // xAI
-	ProviderTogether Provider = "together" // together.ai
-	ProviderNovita   Provider = "novita"   // novita.ai
+	ProviderOpenAI     Provider = "openai"     // OpenAI
+	ProviderClaude     Provider = "claude"     // Anthropic Claude
+	ProviderGemini     Provider = "gemini"     // Google Gemini / PaLM2
+	ProviderMistral    Provider = "mistral"    // Mistral AI
+	ProviderDeepSeek   Provider = "deepseek"   // DeepSeek
+	ProviderGroq       Provider = "groq"       // Groq
+	ProviderCohere     Provider = "cohere"     // Cohere
+	ProviderXAI        Provider = "xai"        // xAI
+	ProviderTogether   Provider = "together"   // together.ai
+	ProviderNovita     Provider = "novita"     // novita.ai
+	ProviderOpenRouter Provider = "openrouter" // OpenRouter
 
 	// 国内模型
 	ProviderQwen        Provider = "qwen"        // 通义千问
@@ -46,7 +47,7 @@ func (p Provider) IsValid() bool {
 	switch p {
 	case ProviderOpenAI, ProviderClaude, ProviderGemini, ProviderMistral,
 		ProviderDeepSeek, ProviderGroq, ProviderCohere, ProviderXAI,
-		ProviderTogether, ProviderNovita, ProviderQwen, ProviderSiliconFlow,
+		ProviderTogether, ProviderNovita, ProviderOpenRouter, ProviderQwen, ProviderSiliconFlow,
 		ProviderDoubao, ProviderErnie, ProviderSpark, ProviderChatGLM,
 		Provider360, ProviderHunyuan, ProviderMoonshot, ProviderBaichuan,
 		ProviderMiniMax, ProviderYi, ProviderStepFun, ProviderCoze,
@@ -70,6 +71,7 @@ func AllProviders() []Provider {
 		ProviderXAI,
 		ProviderTogether,
 		ProviderNovita,
+		ProviderOpenRouter,
 		ProviderQwen,
 		ProviderSiliconFlow,
 		ProviderDoubao,

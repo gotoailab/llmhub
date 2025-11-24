@@ -33,4 +33,5 @@ func init() {
 	adapters.Register(adapters.Provider(ProviderTogether), adapters.NewTogetherAdapter)
 	adapters.Register(adapters.Provider(ProviderNovita), adapters.NewNovitaAdapter)
 	adapters.Register(adapters.Provider(ProviderXAI), adapters.NewXaiAdapter)
+	adapters.Register(adapters.Provider(ProviderOpenRouter), adapters.NewOpenRouterAdapter)
 }

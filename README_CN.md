@@ -23,6 +23,7 @@ LLMHub 是一个用 Golang 开发的统一大模型 API 客户端库，提供与
 - xAI
 - Together.ai
 - Novita.ai
+- OpenRouter
 
 ### 国内模型
 - Qwen (通义千问)
@@ -127,6 +128,13 @@ client, _ := llmhub.NewClient(llmhub.ClientConfig{
     Provider: llmhub.ProviderQwen,
     Model:    "qwen-turbo",
 })
+
+// OpenRouter
+client, _ := llmhub.NewClient(llmhub.ClientConfig{
+    APIKey:   "your-openrouter-key",
+    Provider: llmhub.ProviderOpenRouter,
+    Model:    "openai/gpt-3.5-turbo", // OpenRouter 使用 provider/model 格式
+})
 ```
 
 ### 流式响应
@@ -228,6 +236,7 @@ ProviderCohere      // Cohere
 ProviderTogether    // together.ai
 ProviderNovita      // novita.ai
 ProviderXAI         // xAI
+ProviderOpenRouter  // OpenRouter
 ```
 
 ## 类型定义
