@@ -14,12 +14,13 @@ import (
 
 // openAICompatibleAdapter 通用的 OpenAI 兼容适配器
 type openAICompatibleAdapter struct {
-	provider   Provider
-	apiKey     string
-	baseURL    string
-	client     *http.Client
-	endpoint   string // API 端点路径，默认为 /chat/completions
-	authHeader string // 认证头格式，默认为 "Bearer"
+	provider      Provider
+	apiKey        string
+	baseURL       string
+	client        *http.Client
+	endpoint      string // API 端点路径，默认为 /chat/completions
+	authHeader    string // 认证头格式，默认为 "Bearer"
+	supportsTools bool   // 是否支持工具调用
 }
 
 // NewOpenAICompatibleAdapter 创建通用的 OpenAI 兼容适配器
@@ -34,12 +35,16 @@ func NewOpenAICompatibleAdapter(provider Provider, apiKey, baseURL, endpoint, au
 		authHeader = "Bearer"
 	}
 
+	// 根据提供商判断是否支持工具调用
+	supportsTools := isProviderSupportsTools(provider)
+
 	return &openAICompatibleAdapter{
-		provider:   provider,
-		apiKey:     apiKey,
-		baseURL:    baseURL,
-		endpoint:   endpoint,
-		authHeader: authHeader,
+		provider:      provider,
+		apiKey:        apiKey,
+		baseURL:       baseURL,
+		endpoint:      endpoint,
+		authHeader:    authHeader,
+		supportsTools: supportsTools,
 		client: &http.Client{
 			Timeout: 60 * time.Second,
 		},
@@ -51,6 +56,11 @@ func (a *openAICompatibleAdapter) GetProvider() Provider {
 }
 
 func (a *openAICompatibleAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {
+	// 检查工具调用支持
+	if (len(req.Tools) > 0 || len(req.Functions) > 0) && !a.supportsTools {
+		return nil, fmt.Errorf("tool use not supported for provider %s", a.provider)
+	}
+
 	openaiReq := convertToOpenAIFormatGeneric(req)
 
 	reqBody, err := json.Marshal(openaiReq)
@@ -92,6 +102,11 @@ func (a *openAICompatibleAdapter) ChatCompletion(ctx context.Context, req *model
 }
 
 func (a *openAICompatibleAdapter) ChatCompletionStream(ctx context.Context, req *models.ChatCompletionRequest) (io.ReadCloser, error) {
+	// 检查工具调用支持
+	if (len(req.Tools) > 0 || len(req.Functions) > 0) && !a.supportsTools {
+		return nil, fmt.Errorf("tool use not supported for provider %s", a.provider)
+	}
+
 	openaiReq := convertToOpenAIFormatGeneric(req)
 	openaiReq["stream"] = true
 
@@ -125,4 +140,40 @@ func (a *openAICompatibleAdapter) ChatCompletionStream(ctx context.Context, req 
 	}
 
 	return resp.Body, nil
+}
+
+// 判断提供商是否支持工具调用
+func isProviderSupportsTools(provider Provider) bool {
+	supportedProviders := map[Provider]bool{
+		"openrouter":   true,
+		"groq":         true,
+		"together":     true,
+		"deepseek":     true,
+		"siliconflow":  true,
+		"moonshot":     true,
+		"stepfun":      true,
+		"mistral":      true,
+		"cohere":       true,
+		"qwen":         false, // 通义千问暂不支持标准工具调用
+		"baichuan":     false,
+		"chatglm":      false,
+		"ernie":        false,
+		"spark":        false,
+		"hunyuan":      false,
+		"360":          false,
+		"minimax":      false,
+		"yi":           false,
+		"doubao":       false,
+		"novita":       true,
+		"xai":          true,
+		"ollama":       false, // Ollama 需要特殊处理
+		"coze":         false,
+	}
+
+	supported, exists := supportedProviders[provider]
+	if !exists {
+		// 对于未知提供商，默认不支持
+		return false
+	}
+	return supported
 }

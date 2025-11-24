@@ -38,6 +38,11 @@ func (a *QwenAdapter) GetProvider() Provider {
 }
 
 func (a *QwenAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {
+	// 检查工具调用 - Qwen 暂不支持标准的 OpenAI 工具调用格式
+	if len(req.Tools) > 0 || len(req.Functions) > 0 {
+		return nil, fmt.Errorf("tool use not supported for Qwen models")
+	}
+
 	// Qwen 使用 OpenAI 兼容的 API
 	qwenReq := a.convertToOpenAIFormat(req)
 
@@ -76,6 +81,11 @@ func (a *QwenAdapter) ChatCompletion(ctx context.Context, req *models.ChatComple
 }
 
 func (a *QwenAdapter) ChatCompletionStream(ctx context.Context, req *models.ChatCompletionRequest) (io.ReadCloser, error) {
+	// 检查工具调用 - Qwen 暂不支持标准的 OpenAI 工具调用格式
+	if len(req.Tools) > 0 || len(req.Functions) > 0 {
+		return nil, fmt.Errorf("tool use not supported for Qwen models")
+	}
+
 	qwenReq := a.convertToOpenAIFormat(req)
 	qwenReq["stream"] = true
 

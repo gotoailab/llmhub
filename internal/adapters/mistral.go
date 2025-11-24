@@ -38,6 +38,7 @@ func (a *MistralAdapter) GetProvider() Provider {
 }
 
 func (a *MistralAdapter) ChatCompletion(ctx context.Context, req *models.ChatCompletionRequest) (*models.ChatCompletionResponse, error) {
+	// 检查工具调用支持 - Mistral 支持工具调用
 	// Mistral 使用 OpenAI 兼容的 API
 	mistralReq := convertToOpenAIFormatGeneric(req)
 
@@ -101,45 +102,4 @@ func (a *MistralAdapter) ChatCompletionStream(ctx context.Context, req *models.C
 	}
 
 	return resp.Body, nil
-}
-
-// convertToOpenAIFormatGeneric 通用的 OpenAI 格式转换函数
-func convertToOpenAIFormatGeneric(req *models.ChatCompletionRequest) map[string]interface{} {
-	messages := make([]map[string]interface{}, 0, len(req.Messages))
-	for _, msg := range req.Messages {
-		msgMap := map[string]interface{}{
-			"role": msg.Role,
-		}
-
-		switch v := msg.Content.(type) {
-		case string:
-			msgMap["content"] = v
-		case []interface{}:
-			msgMap["content"] = v
-		default:
-			msgMap["content"] = fmt.Sprintf("%v", v)
-		}
-
-		messages = append(messages, msgMap)
-	}
-
-	result := map[string]interface{}{
-		"model":    req.Model,
-		"messages": messages,
-	}
-
-	if req.Temperature != nil {
-		result["temperature"] = *req.Temperature
-	}
-	if req.TopP != nil {
-		result["top_p"] = *req.TopP
-	}
-	if req.MaxTokens != nil {
-		result["max_tokens"] = *req.MaxTokens
-	}
-	if req.Stop != nil && len(req.Stop) > 0 {
-		result["stop"] = req.Stop
-	}
-
-	return result
 }
