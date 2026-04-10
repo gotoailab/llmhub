@@ -12,9 +12,9 @@ type ChatCompletionRequest struct {
 	FrequencyPenalty *float64               `json:"frequency_penalty,omitempty"`
 	Stop             []string               `json:"stop,omitempty"`
 	User             string                 `json:"user,omitempty"`
-	Functions        []FunctionDefinition  `json:"functions,omitempty"`
+	Functions        []FunctionDefinition   `json:"functions,omitempty"`
 	FunctionCall     interface{}            `json:"function_call,omitempty"`
-	LogitBias       map[string]int         `json:"logit_bias,omitempty"`
+	LogitBias        map[string]int         `json:"logit_bias,omitempty"`
 	LogProbs         bool                   `json:"logprobs,omitempty"`
 	TopLogProbs      *int                   `json:"top_logprobs,omitempty"`
 	ResponseFormat   *ResponseFormat        `json:"response_format,omitempty"`
@@ -22,6 +22,9 @@ type ChatCompletionRequest struct {
 	Tools            []Tool                 `json:"tools,omitempty"`
 	ToolChoice       interface{}            `json:"tool_choice,omitempty"`
 	ExtraParams      map[string]interface{} `json:"-"`
+	// AnthropicCaching enables Anthropic prompt caching (cache_control: ephemeral)
+	// on the system prompt. Only effective when using the Claude adapter.
+	AnthropicCaching bool `json:"anthropic_caching,omitempty"`
 }
 
 type ChatMessage struct {
@@ -51,11 +54,10 @@ type ToolCall struct {
 }
 
 type Tool struct {
-	Type     string           `json:"type"`
+	Type     string             `json:"type"`
 	Function FunctionDefinition `json:"function"`
 }
 
 type ResponseFormat struct {
 	Type string `json:"type"`
 }
-

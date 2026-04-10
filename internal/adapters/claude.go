@@ -65,6 +65,9 @@ func (a *ClaudeAdapter) ChatCompletion(ctx context.Context, req *models.ChatComp
 	httpReq.Header.Set("Content-Type", "application/json")
 	httpReq.Header.Set("x-api-key", a.apiKey)
 	httpReq.Header.Set("anthropic-version", "2023-06-01")
+	if req.AnthropicCaching {
+		httpReq.Header.Set("anthropic-beta", "prompt-caching-2024-07-31")
+	}
 
 	resp, err := a.client.Do(httpReq)
 	if err != nil {
@@ -112,6 +115,9 @@ func (a *ClaudeAdapter) ChatCompletionStream(ctx context.Context, req *models.Ch
 	httpReq.Header.Set("Content-Type", "application/json")
 	httpReq.Header.Set("x-api-key", a.apiKey)
 	httpReq.Header.Set("anthropic-version", "2023-06-01")
+	if req.AnthropicCaching {
+		httpReq.Header.Set("anthropic-beta", "prompt-caching-2024-07-31")
+	}
 
 	resp, err := a.client.Do(httpReq)
 	if err != nil {
@@ -147,6 +153,18 @@ func (a *ClaudeAdapter) supportsTools(modelName string) bool {
 	return supported
 }
 
+// ClaudeCacheControl represents the cache_control field for prompt caching.
+type ClaudeCacheControl struct {
+	Type string `json:"type"` // "ephemeral"
+}
+
+// ClaudeSystemBlock is a system content block with optional cache_control.
+type ClaudeSystemBlock struct {
+	Type         string              `json:"type"`
+	Text         string              `json:"text"`
+	CacheControl *ClaudeCacheControl `json:"cache_control,omitempty"`
+}
+
 // Claude 请求结构
 type ClaudeRequest struct {
 	Model       string          `json:"model"`
@@ -157,12 +175,13 @@ type ClaudeRequest struct {
 	Stream      bool            `json:"stream,omitempty"`
 	Tools       []ClaudeTool    `json:"tools,omitempty"`
 	ToolChoice  interface{}     `json:"tool_choice,omitempty"`
-	System      string          `json:"system,omitempty"`
+	// System accepts either a plain string or []ClaudeSystemBlock (for caching).
+	System interface{} `json:"system,omitempty"`
 }
 
 type ClaudeMessage struct {
-	Role    string        `json:"role"`
-	Content interface{}   `json:"content"`
+	Role    string      `json:"role"`
+	Content interface{} `json:"content"`
 }
 
 type ClaudeTool struct {
@@ -179,10 +198,10 @@ type ClaudeToolUse struct {
 }
 
 type ClaudeToolResult struct {
-	Type       string      `json:"type"`
-	ToolUseID  string      `json:"tool_use_id"`
-	Content    interface{} `json:"content"`
-	IsError    bool        `json:"is_error,omitempty"`
+	Type      string      `json:"type"`
+	ToolUseID string      `json:"tool_use_id"`
+	Content   interface{} `json:"content"`
+	IsError   bool        `json:"is_error,omitempty"`
 }
 
 // Claude 响应结构
@@ -198,16 +217,19 @@ type ClaudeResponse struct {
 }
 
 type ClaudeContent struct {
-	Type  string      `json:"type"`
-	Text  string      `json:"text,omitempty"`
-	ID    string      `json:"id,omitempty"`
-	Name  string      `json:"name,omitempty"`
-	Input interface{} `json:"input,omitempty"`
+	Type         string              `json:"type"`
+	Text         string              `json:"text,omitempty"`
+	ID           string              `json:"id,omitempty"`
+	Name         string              `json:"name,omitempty"`
+	Input        interface{}         `json:"input,omitempty"`
+	CacheControl *ClaudeCacheControl `json:"cache_control,omitempty"`
 }
 
 type ClaudeUsage struct {
-	InputTokens  int `json:"input_tokens"`
-	OutputTokens int `json:"output_tokens"`
+	InputTokens        int `json:"input_tokens"`
+	OutputTokens       int `json:"output_tokens"`
+	CacheCreationTokens int `json:"cache_creation_input_tokens,omitempty"`
+	CacheReadTokens    int `json:"cache_read_input_tokens,omitempty"`
 }
 
 func (a *ClaudeAdapter) convertToClaudeRequest(req *models.ChatCompletionRequest) (*ClaudeRequest, error) {
@@ -230,7 +252,7 @@ func (a *ClaudeAdapter) convertToClaudeRequest(req *models.ChatCompletionRequest
 		// 处理工具调用消息
 		if len(msg.ToolCalls) > 0 {
 			content := make([]interface{}, 0)
-			
+
 			// 添加文本内容（如果有）
 			if textContent, ok := msg.Content.(string); ok && textContent != "" {
 				content = append(content, map[string]string{
@@ -245,7 +267,7 @@ func (a *ClaudeAdapter) convertToClaudeRequest(req *models.ChatCompletionRequest
 				if tc.Function.Arguments != "" {
 					json.Unmarshal([]byte(tc.Function.Arguments), &input)
 				}
-				
+
 				content = append(content, ClaudeToolUse{
 					Type:  "tool_use",
 					ID:    tc.ID,
@@ -277,11 +299,25 @@ func (a *ClaudeAdapter) convertToClaudeRequest(req *models.ChatCompletionRequest
 		MaxTokens:   getIntValue(req.MaxTokens),
 		Temperature: req.Temperature,
 		TopP:        req.TopP,
-		System:      systemMessage,
 	}
 
 	if claudeReq.MaxTokens == 0 {
 		claudeReq.MaxTokens = 4096 // 默认值
+	}
+
+	// Set system prompt — use block format with cache_control when caching is enabled.
+	if systemMessage != "" {
+		if req.AnthropicCaching {
+			claudeReq.System = []ClaudeSystemBlock{
+				{
+					Type: "text",
+					Text: systemMessage,
+					CacheControl: &ClaudeCacheControl{Type: "ephemeral"},
+				},
+			}
+		} else {
+			claudeReq.System = systemMessage
+		}
 	}
 
 	// 转换工具定义
